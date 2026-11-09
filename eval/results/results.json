@@ -1,0 +1,3274 @@
+[
+  {
+    "id": "bpm-60-snr-clean",
+    "group": "bpm",
+    "truth": {
+      "bpm": 60
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 1060,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 60.0,
+      "bpm_confidence": 22.463,
+      "bpm_candidates": [
+        {
+          "bpm": 60.0,
+          "raw": 60.03,
+          "salience": 1.3016301913139126
+        },
+        {
+          "bpm": 120.1,
+          "raw": 120.05,
+          "salience": 0.22209285793869019
+        },
+        {
+          "bpm": 179.2,
+          "raw": 179.16,
+          "salience": 0.059147478816252354
+        }
+      ],
+      "key": "F major",
+      "key_confidence": 0.328,
+      "key_top2": [
+        "F major",
+        "A# major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.048218,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.074,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-60-snr-20",
+    "group": "bpm",
+    "truth": {
+      "bpm": 60
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 1080,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 60.0,
+      "bpm_confidence": 22.518,
+      "bpm_candidates": [
+        {
+          "bpm": 60.0,
+          "raw": 60.03,
+          "salience": 1.31268496967079
+        },
+        {
+          "bpm": 120.1,
+          "raw": 120.05,
+          "salience": 0.22409903355077926
+        },
+        {
+          "bpm": 179.2,
+          "raw": 179.16,
+          "salience": 0.0599780987207669
+        }
+      ],
+      "key": "G minor",
+      "key_confidence": 0.4636,
+      "key_top2": [
+        "G minor",
+        "D major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.044675,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.069,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-60-snr-10",
+    "group": "bpm",
+    "truth": {
+      "bpm": 60
+    },
+    "meta": {
+      "snr_db": 10,
+      "seed": 1070,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 60.0,
+      "bpm_confidence": 22.834,
+      "bpm_candidates": [
+        {
+          "bpm": 60.0,
+          "raw": 60.03,
+          "salience": 1.316728289099756
+        },
+        {
+          "bpm": 120.1,
+          "raw": 120.05,
+          "salience": 0.22446652578177356
+        },
+        {
+          "bpm": 179.1,
+          "raw": 179.14,
+          "salience": 0.06114427984632227
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.369,
+      "key_top2": [
+        "A minor",
+        "A major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.049934,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0693,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-75-snr-clean",
+    "group": "bpm",
+    "truth": {
+      "bpm": 75
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 1075,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 75.0,
+      "bpm_confidence": 21.797,
+      "bpm_candidates": [
+        {
+          "bpm": 75.0,
+          "raw": 74.97,
+          "salience": 1.3018462886141255
+        },
+        {
+          "bpm": 100.1,
+          "raw": 50.03,
+          "salience": 0.16679141171447381
+        },
+        {
+          "bpm": 150.1,
+          "raw": 150.14,
+          "salience": 0.1667019871494756
+        }
+      ],
+      "key": "G minor",
+      "key_confidence": 0.4429,
+      "key_top2": [
+        "G minor",
+        "D minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.054863,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0735,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-75-snr-20",
+    "group": "bpm",
+    "truth": {
+      "bpm": 75
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 1095,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 75.0,
+      "bpm_confidence": 21.883,
+      "bpm_candidates": [
+        {
+          "bpm": 75.0,
+          "raw": 74.97,
+          "salience": 1.3336353972156882
+        },
+        {
+          "bpm": 150.1,
+          "raw": 150.12,
+          "salience": 0.17111994660001328
+        },
+        {
+          "bpm": 100.1,
+          "raw": 50.03,
+          "salience": 0.16993403116189687
+        }
+      ],
+      "key": "D major",
+      "key_confidence": 0.5991,
+      "key_top2": [
+        "D major",
+        "D minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.056869,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0732,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-75-snr-10",
+    "group": "bpm",
+    "truth": {
+      "bpm": 75
+    },
+    "meta": {
+      "snr_db": 10,
+      "seed": 1085,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 75.0,
+      "bpm_confidence": 22.158,
+      "bpm_candidates": [
+        {
+          "bpm": 75.0,
+          "raw": 74.97,
+          "salience": 1.3120811778002783
+        },
+        {
+          "bpm": 150.1,
+          "raw": 150.14,
+          "salience": 0.1676141446837389
+        },
+        {
+          "bpm": 100.1,
+          "raw": 50.03,
+          "salience": 0.16697970737046441
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.4587,
+      "key_top2": [
+        "A minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.05482,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0707,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-90-snr-clean",
+    "group": "bpm",
+    "truth": {
+      "bpm": 90
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 1090,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 90.1,
+      "bpm_confidence": 21.27,
+      "bpm_candidates": [
+        {
+          "bpm": 90.1,
+          "raw": 90.06,
+          "salience": 1.231882000912592
+        },
+        {
+          "bpm": 179.6,
+          "raw": 179.61,
+          "salience": 0.17928104821431554
+        },
+        {
+          "bpm": 60.0,
+          "raw": 60.03,
+          "salience": 0.176599929842428
+        }
+      ],
+      "key": "A major",
+      "key_confidence": 0.6557,
+      "key_top2": [
+        "A major",
+        "D major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.058082,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0689,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-90-snr-20",
+    "group": "bpm",
+    "truth": {
+      "bpm": 90
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 1110,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 90.1,
+      "bpm_confidence": 21.347,
+      "bpm_candidates": [
+        {
+          "bpm": 90.1,
+          "raw": 90.06,
+          "salience": 1.2446898834615094
+        },
+        {
+          "bpm": 179.6,
+          "raw": 179.61,
+          "salience": 0.18115829217123103
+        },
+        {
+          "bpm": 60.0,
+          "raw": 60.03,
+          "salience": 0.17861860734353843
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.4403,
+      "key_top2": [
+        "A minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.057079,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0704,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-90-snr-10",
+    "group": "bpm",
+    "truth": {
+      "bpm": 90
+    },
+    "meta": {
+      "snr_db": 10,
+      "seed": 1100,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 90.1,
+      "bpm_confidence": 21.609,
+      "bpm_candidates": [
+        {
+          "bpm": 90.1,
+          "raw": 90.07,
+          "salience": 1.228503610709892
+        },
+        {
+          "bpm": 179.6,
+          "raw": 179.6,
+          "salience": 0.17911352583236084
+        },
+        {
+          "bpm": 60.0,
+          "raw": 60.03,
+          "salience": 0.1770547764693521
+        }
+      ],
+      "key": "G minor",
+      "key_confidence": 0.4162,
+      "key_top2": [
+        "G minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.057347,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0727,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-100-snr-clean",
+    "group": "bpm",
+    "truth": {
+      "bpm": 100
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 1100,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 99.9,
+      "bpm_confidence": 13.113,
+      "bpm_candidates": [
+        {
+          "bpm": 99.9,
+          "raw": 99.88,
+          "salience": 1.2787233778686797
+        },
+        {
+          "bpm": 100.1,
+          "raw": 50.03,
+          "salience": 1.2128399241465364
+        },
+        {
+          "bpm": 99.8,
+          "raw": 199.68,
+          "salience": 0.18209136285806576
+        }
+      ],
+      "key": "G minor",
+      "key_confidence": 0.4446,
+      "key_top2": [
+        "G minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.058627,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0709,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-100-snr-20",
+    "group": "bpm",
+    "truth": {
+      "bpm": 100
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 1120,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 99.9,
+      "bpm_confidence": 13.21,
+      "bpm_candidates": [
+        {
+          "bpm": 99.9,
+          "raw": 99.88,
+          "salience": 1.2953901165830257
+        },
+        {
+          "bpm": 100.1,
+          "raw": 50.03,
+          "salience": 1.225956670273922
+        },
+        {
+          "bpm": 99.8,
+          "raw": 199.67,
+          "salience": 0.18606596584488444
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.338,
+      "key_top2": [
+        "A minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.062467,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.076,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-100-snr-10",
+    "group": "bpm",
+    "truth": {
+      "bpm": 100
+    },
+    "meta": {
+      "snr_db": 10,
+      "seed": 1110,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 99.9,
+      "bpm_confidence": 13.339,
+      "bpm_candidates": [
+        {
+          "bpm": 99.9,
+          "raw": 99.88,
+          "salience": 1.285107678564808
+        },
+        {
+          "bpm": 100.1,
+          "raw": 50.03,
+          "salience": 1.2158687134180617
+        },
+        {
+          "bpm": 99.8,
+          "raw": 199.66,
+          "salience": 0.18395622553003207
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.4352,
+      "key_top2": [
+        "A minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.063537,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0685,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-110-snr-clean",
+    "group": "bpm",
+    "truth": {
+      "bpm": 110
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 1110,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 110.0,
+      "bpm_confidence": 13.177,
+      "bpm_candidates": [
+        {
+          "bpm": 110.0,
+          "raw": 109.99,
+          "salience": 1.3320252352647317
+        },
+        {
+          "bpm": 73.4,
+          "raw": 73.36,
+          "salience": 0.1222850227939128
+        },
+        {
+          "bpm": 165.7,
+          "raw": 165.75,
+          "salience": -0.0019093151805592012
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.4191,
+      "key_top2": [
+        "A minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.064951,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.077,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-110-snr-20",
+    "group": "bpm",
+    "truth": {
+      "bpm": 110
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 1130,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 110.0,
+      "bpm_confidence": 13.27,
+      "bpm_candidates": [
+        {
+          "bpm": 110.0,
+          "raw": 109.99,
+          "salience": 1.35146827350366
+        },
+        {
+          "bpm": 73.4,
+          "raw": 73.36,
+          "salience": 0.12349095520771272
+        },
+        {
+          "bpm": 165.8,
+          "raw": 165.75,
+          "salience": -0.001810426381168434
+        }
+      ],
+      "key": "F major",
+      "key_confidence": 0.4323,
+      "key_top2": [
+        "F major",
+        "A minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.06612,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0738,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-110-snr-10",
+    "group": "bpm",
+    "truth": {
+      "bpm": 110
+    },
+    "meta": {
+      "snr_db": 10,
+      "seed": 1120,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 110.0,
+      "bpm_confidence": 13.66,
+      "bpm_candidates": [
+        {
+          "bpm": 110.0,
+          "raw": 109.99,
+          "salience": 1.3484370421456369
+        },
+        {
+          "bpm": 73.4,
+          "raw": 73.36,
+          "salience": 0.12211271465639625
+        },
+        {
+          "bpm": 165.8,
+          "raw": 165.78,
+          "salience": -0.0011983771776958307
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.349,
+      "key_top2": [
+        "A minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.06834,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0676,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-120-snr-clean",
+    "group": "bpm",
+    "truth": {
+      "bpm": 120
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 1120,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 120.1,
+      "bpm_confidence": 13.372,
+      "bpm_candidates": [
+        {
+          "bpm": 120.1,
+          "raw": 120.06,
+          "salience": 1.3502574321140322
+        },
+        {
+          "bpm": 60.0,
+          "raw": 60.03,
+          "salience": 1.3016157849641519
+        },
+        {
+          "bpm": 79.9,
+          "raw": 79.94,
+          "salience": 0.1261481873762369
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.3434,
+      "key_top2": [
+        "A minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.070003,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0684,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-120-snr-20",
+    "group": "bpm",
+    "truth": {
+      "bpm": 120
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 1140,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 120.1,
+      "bpm_confidence": 13.441,
+      "bpm_candidates": [
+        {
+          "bpm": 120.1,
+          "raw": 120.06,
+          "salience": 1.3724385330437125
+        },
+        {
+          "bpm": 60.0,
+          "raw": 60.03,
+          "salience": 1.3181178297410823
+        },
+        {
+          "bpm": 79.9,
+          "raw": 79.94,
+          "salience": 0.1286964155730616
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.419,
+      "key_top2": [
+        "A minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.067274,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0675,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-120-snr-10",
+    "group": "bpm",
+    "truth": {
+      "bpm": 120
+    },
+    "meta": {
+      "snr_db": 10,
+      "seed": 1130,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 120.1,
+      "bpm_confidence": 13.655,
+      "bpm_candidates": [
+        {
+          "bpm": 120.1,
+          "raw": 120.05,
+          "salience": 1.3626636428697234
+        },
+        {
+          "bpm": 60.0,
+          "raw": 60.03,
+          "salience": 1.3111250086583786
+        },
+        {
+          "bpm": 79.9,
+          "raw": 79.93,
+          "salience": 0.12795148096096287
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.3694,
+      "key_top2": [
+        "A minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.071422,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0761,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-128-snr-clean",
+    "group": "bpm",
+    "truth": {
+      "bpm": 128
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 1128,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 128.2,
+      "bpm_confidence": 12.375,
+      "bpm_candidates": [
+        {
+          "bpm": 64.0,
+          "raw": 63.95,
+          "salience": 1.2798056166536749
+        },
+        {
+          "bpm": 128.2,
+          "raw": 128.17,
+          "salience": 1.2658741107285918
+        },
+        {
+          "bpm": 102.4,
+          "raw": 51.19,
+          "salience": 0.135956437804973
+        }
+      ],
+      "key": "F major",
+      "key_confidence": 0.3844,
+      "key_top2": [
+        "F major",
+        "A minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.065406,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0717,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-128-snr-20",
+    "group": "bpm",
+    "truth": {
+      "bpm": 128
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 1148,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 128.2,
+      "bpm_confidence": 12.461,
+      "bpm_candidates": [
+        {
+          "bpm": 64.0,
+          "raw": 63.95,
+          "salience": 1.2938901020721543
+        },
+        {
+          "bpm": 128.2,
+          "raw": 128.17,
+          "salience": 1.2837616404435408
+        },
+        {
+          "bpm": 102.4,
+          "raw": 51.19,
+          "salience": 0.1393373483108783
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.6231,
+      "key_top2": [
+        "A minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.071369,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0694,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-128-snr-10",
+    "group": "bpm",
+    "truth": {
+      "bpm": 128
+    },
+    "meta": {
+      "snr_db": 10,
+      "seed": 1138,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 128.2,
+      "bpm_confidence": 12.64,
+      "bpm_candidates": [
+        {
+          "bpm": 64.0,
+          "raw": 63.95,
+          "salience": 1.2899246992865407
+        },
+        {
+          "bpm": 128.2,
+          "raw": 128.18,
+          "salience": 1.2764904110788715
+        },
+        {
+          "bpm": 102.4,
+          "raw": 51.19,
+          "salience": 0.13916101072273257
+        }
+      ],
+      "key": "D major",
+      "key_confidence": 0.4285,
+      "key_top2": [
+        "D major",
+        "A minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.074253,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0726,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-140-snr-clean",
+    "group": "bpm",
+    "truth": {
+      "bpm": 140
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 1140,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 139.9,
+      "bpm_confidence": 13.427,
+      "bpm_candidates": [
+        {
+          "bpm": 139.9,
+          "raw": 139.91,
+          "salience": 1.3500444400436138
+        },
+        {
+          "bpm": 70.0,
+          "raw": 69.96,
+          "salience": 1.3051460735884068
+        },
+        {
+          "bpm": 112.1,
+          "raw": 56.04,
+          "salience": 0.11026199041971042
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.419,
+      "key_top2": [
+        "A minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.076561,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0673,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-140-snr-20",
+    "group": "bpm",
+    "truth": {
+      "bpm": 140
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 1160,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 139.9,
+      "bpm_confidence": 13.542,
+      "bpm_candidates": [
+        {
+          "bpm": 139.9,
+          "raw": 139.91,
+          "salience": 1.3646432993318385
+        },
+        {
+          "bpm": 70.0,
+          "raw": 69.96,
+          "salience": 1.3149130707382015
+        },
+        {
+          "bpm": 112.1,
+          "raw": 56.04,
+          "salience": 0.11281962621476262
+        }
+      ],
+      "key": "D minor",
+      "key_confidence": 0.4829,
+      "key_top2": [
+        "D minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.077082,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.071,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-140-snr-10",
+    "group": "bpm",
+    "truth": {
+      "bpm": 140
+    },
+    "meta": {
+      "snr_db": 10,
+      "seed": 1150,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 139.9,
+      "bpm_confidence": 13.751,
+      "bpm_candidates": [
+        {
+          "bpm": 139.9,
+          "raw": 139.9,
+          "salience": 1.3583218759116824
+        },
+        {
+          "bpm": 70.0,
+          "raw": 69.96,
+          "salience": 1.3099047258952679
+        },
+        {
+          "bpm": 112.1,
+          "raw": 56.04,
+          "salience": 0.11259778242353827
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.4595,
+      "key_top2": [
+        "A minor",
+        "F# minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.075955,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0726,
+    "score": {
+      "strict": true,
+      "tolerance": true,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-150-snr-clean",
+    "group": "bpm",
+    "truth": {
+      "bpm": 150
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 1150,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 100.1,
+      "bpm_confidence": 8.695,
+      "bpm_candidates": [
+        {
+          "bpm": 75.0,
+          "raw": 74.97,
+          "salience": 1.3166428050346701
+        },
+        {
+          "bpm": 150.1,
+          "raw": 150.12,
+          "salience": 1.229709863137316
+        },
+        {
+          "bpm": 100.1,
+          "raw": 50.03,
+          "salience": 1.2001142185570552
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.4604,
+      "key_top2": [
+        "A minor",
+        "F# minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.077417,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0729,
+    "score": {
+      "strict": false,
+      "tolerance": false,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-150-snr-20",
+    "group": "bpm",
+    "truth": {
+      "bpm": 150
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 1170,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 100.1,
+      "bpm_confidence": 8.745,
+      "bpm_candidates": [
+        {
+          "bpm": 75.0,
+          "raw": 74.97,
+          "salience": 1.3224164744282805
+        },
+        {
+          "bpm": 150.1,
+          "raw": 150.13,
+          "salience": 1.2348048652785006
+        },
+        {
+          "bpm": 100.1,
+          "raw": 50.03,
+          "salience": 1.2057354024951752
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.568,
+      "key_top2": [
+        "A minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.069389,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0717,
+    "score": {
+      "strict": false,
+      "tolerance": false,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-150-snr-10",
+    "group": "bpm",
+    "truth": {
+      "bpm": 150
+    },
+    "meta": {
+      "snr_db": 10,
+      "seed": 1160,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 100.1,
+      "bpm_confidence": 8.887,
+      "bpm_candidates": [
+        {
+          "bpm": 75.0,
+          "raw": 74.97,
+          "salience": 1.322800510931492
+        },
+        {
+          "bpm": 150.1,
+          "raw": 150.13,
+          "salience": 1.2316049125340796
+        },
+        {
+          "bpm": 100.1,
+          "raw": 50.03,
+          "salience": 1.2042718998469155
+        }
+      ],
+      "key": "D minor",
+      "key_confidence": 0.4182,
+      "key_top2": [
+        "D minor",
+        "A minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.083314,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0694,
+    "score": {
+      "strict": false,
+      "tolerance": false,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-170-snr-clean",
+    "group": "bpm",
+    "truth": {
+      "bpm": 170
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 1170,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 113.4,
+      "bpm_confidence": 8.872,
+      "bpm_candidates": [
+        {
+          "bpm": 84.9,
+          "raw": 84.93,
+          "salience": 1.303551300037609
+        },
+        {
+          "bpm": 113.4,
+          "raw": 56.7,
+          "salience": 1.261524392526114
+        },
+        {
+          "bpm": 170.3,
+          "raw": 170.28,
+          "salience": 1.2502128960323602
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.5776,
+      "key_top2": [
+        "A minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.074941,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0719,
+    "score": {
+      "strict": false,
+      "tolerance": false,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-170-snr-20",
+    "group": "bpm",
+    "truth": {
+      "bpm": 170
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 1190,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 113.4,
+      "bpm_confidence": 8.952,
+      "bpm_candidates": [
+        {
+          "bpm": 84.9,
+          "raw": 84.93,
+          "salience": 1.3129937662960796
+        },
+        {
+          "bpm": 113.4,
+          "raw": 56.7,
+          "salience": 1.272778722410804
+        },
+        {
+          "bpm": 170.3,
+          "raw": 170.28,
+          "salience": 1.2605073784376657
+        }
+      ],
+      "key": "D minor",
+      "key_confidence": 0.3731,
+      "key_top2": [
+        "D minor",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.078555,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0724,
+    "score": {
+      "strict": false,
+      "tolerance": false,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-170-snr-10",
+    "group": "bpm",
+    "truth": {
+      "bpm": 170
+    },
+    "meta": {
+      "snr_db": 10,
+      "seed": 1180,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 113.4,
+      "bpm_confidence": 9.104,
+      "bpm_candidates": [
+        {
+          "bpm": 84.9,
+          "raw": 84.93,
+          "salience": 1.3051719032965041
+        },
+        {
+          "bpm": 113.4,
+          "raw": 56.7,
+          "salience": 1.2636259503000198
+        },
+        {
+          "bpm": 170.3,
+          "raw": 170.29,
+          "salience": 1.248553979333117
+        }
+      ],
+      "key": "G minor",
+      "key_confidence": 0.3811,
+      "key_top2": [
+        "G minor",
+        "A# major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.080116,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0713,
+    "score": {
+      "strict": false,
+      "tolerance": false,
+      "octave_ok": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-180-snr-clean",
+    "group": "bpm",
+    "truth": {
+      "bpm": 180
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 1180,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 90.1,
+      "bpm_confidence": 8.621,
+      "bpm_candidates": [
+        {
+          "bpm": 179.6,
+          "raw": 179.62,
+          "salience": 1.3070964841473354
+        },
+        {
+          "bpm": 60.0,
+          "raw": 60.03,
+          "salience": 1.2896220637736686
+        },
+        {
+          "bpm": 90.1,
+          "raw": 90.06,
+          "salience": 1.2307413589325933
+        }
+      ],
+      "key": "G minor",
+      "key_confidence": 0.387,
+      "key_top2": [
+        "G minor",
+        "A# major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.079697,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0688,
+    "score": {
+      "strict": false,
+      "tolerance": false,
+      "octave_ok": false,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-180-snr-20",
+    "group": "bpm",
+    "truth": {
+      "bpm": 180
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 1200,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 90.1,
+      "bpm_confidence": 8.681,
+      "bpm_candidates": [
+        {
+          "bpm": 179.6,
+          "raw": 179.61,
+          "salience": 1.319868920912303
+        },
+        {
+          "bpm": 60.0,
+          "raw": 60.03,
+          "salience": 1.3030088601037009
+        },
+        {
+          "bpm": 90.1,
+          "raw": 90.07,
+          "salience": 1.2391066090041178
+        }
+      ],
+      "key": "D minor",
+      "key_confidence": 0.3936,
+      "key_top2": [
+        "D minor",
+        "G minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.079245,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0677,
+    "score": {
+      "strict": false,
+      "tolerance": false,
+      "octave_ok": false,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "bpm-180-snr-10",
+    "group": "bpm",
+    "truth": {
+      "bpm": 180
+    },
+    "meta": {
+      "snr_db": 10,
+      "seed": 1190,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 90.1,
+      "bpm_confidence": 8.832,
+      "bpm_candidates": [
+        {
+          "bpm": 179.6,
+          "raw": 179.61,
+          "salience": 1.3067484147923403
+        },
+        {
+          "bpm": 60.0,
+          "raw": 60.03,
+          "salience": 1.2926119938789669
+        },
+        {
+          "bpm": 90.1,
+          "raw": 90.07,
+          "salience": 1.2274068360097605
+        }
+      ],
+      "key": "D minor",
+      "key_confidence": 0.3495,
+      "key_top2": [
+        "D minor",
+        "A minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.083829,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0758,
+    "score": {
+      "strict": false,
+      "tolerance": false,
+      "octave_ok": false,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-C-major-snr-clean",
+    "group": "key",
+    "truth": {
+      "key": "C major"
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 2000,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 67.1,
+      "bpm_confidence": -11623840.198,
+      "bpm_candidates": [
+        {
+          "bpm": 67.1,
+          "raw": 67.1,
+          "salience": -0.011623840198104645
+        },
+        {
+          "bpm": 178.8,
+          "raw": 178.77,
+          "salience": -0.01183407716275098
+        },
+        {
+          "bpm": 104.5,
+          "raw": 104.5,
+          "salience": -0.012161667955035668
+        }
+      ],
+      "key": "C major",
+      "key_confidence": 0.9214,
+      "key_top2": [
+        "C major",
+        "G major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.176898,
+      "bpm_undetermined": true,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0665,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-C-major-snr-20",
+    "group": "key",
+    "truth": {
+      "key": "C major"
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 2040,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 110.0,
+      "bpm_confidence": 79.997,
+      "bpm_candidates": [
+        {
+          "bpm": 110.0,
+          "raw": 54.98,
+          "salience": 0.0023225501266598315
+        },
+        {
+          "bpm": 100.2,
+          "raw": 100.15,
+          "salience": -0.0016497478841154944
+        },
+        {
+          "bpm": 78.2,
+          "raw": 78.19,
+          "salience": -0.0018317800326595783
+        }
+      ],
+      "key": "C major",
+      "key_confidence": 0.9206,
+      "key_top2": [
+        "C major",
+        "G major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.177779,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0735,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-G-major-snr-clean",
+    "group": "key",
+    "truth": {
+      "key": "G major"
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 2007,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 68.1,
+      "bpm_confidence": -10601163.121,
+      "bpm_candidates": [
+        {
+          "bpm": 108.8,
+          "raw": 108.83,
+          "salience": -0.009162053443220642
+        },
+        {
+          "bpm": 166.2,
+          "raw": 166.25,
+          "salience": -0.009227991664354026
+        },
+        {
+          "bpm": 80.8,
+          "raw": 80.76,
+          "salience": -0.010201016931353075
+        }
+      ],
+      "key": "G major",
+      "key_confidence": 0.9157,
+      "key_top2": [
+        "G major",
+        "D major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.176899,
+      "bpm_undetermined": true,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0677,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-G-major-snr-20",
+    "group": "key",
+    "truth": {
+      "key": "G major"
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 2047,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 90.5,
+      "bpm_confidence": 39.744,
+      "bpm_candidates": [
+        {
+          "bpm": 90.5,
+          "raw": 90.49,
+          "salience": 0.010817361294314064
+        },
+        {
+          "bpm": 95.7,
+          "raw": 191.33,
+          "salience": 0.001539992802641136
+        },
+        {
+          "bpm": 63.1,
+          "raw": 63.11,
+          "salience": -6.291200589200459e-05
+        }
+      ],
+      "key": "G major",
+      "key_confidence": 0.9166,
+      "key_top2": [
+        "G major",
+        "D major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.177736,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0722,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-D-major-snr-clean",
+    "group": "key",
+    "truth": {
+      "key": "D major"
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 2002,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 68.9,
+      "bpm_confidence": -7973912.149,
+      "bpm_candidates": [
+        {
+          "bpm": 153.0,
+          "raw": 153.04,
+          "salience": -0.00723864777399028
+        },
+        {
+          "bpm": 68.9,
+          "raw": 68.92,
+          "salience": -0.007973912148579607
+        },
+        {
+          "bpm": 99.8,
+          "raw": 99.77,
+          "salience": -0.008172724350006334
+        }
+      ],
+      "key": "D major",
+      "key_confidence": 0.9402,
+      "key_top2": [
+        "D major",
+        "A major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.176896,
+      "bpm_undetermined": true,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0738,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-D-major-snr-20",
+    "group": "key",
+    "truth": {
+      "key": "D major"
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 2042,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 122.0,
+      "bpm_confidence": 17.196,
+      "bpm_candidates": [
+        {
+          "bpm": 122.0,
+          "raw": 122.01,
+          "salience": 0.006967307254710378
+        },
+        {
+          "bpm": 153.3,
+          "raw": 153.31,
+          "salience": 0.004326798217205742
+        },
+        {
+          "bpm": 83.3,
+          "raw": 83.25,
+          "salience": 0.00398390953023515
+        }
+      ],
+      "key": "D major",
+      "key_confidence": 0.9419,
+      "key_top2": [
+        "D major",
+        "A major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.177796,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0715,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-F-major-snr-clean",
+    "group": "key",
+    "truth": {
+      "key": "F major"
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 2005,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 62.1,
+      "bpm_confidence": -8331903.271,
+      "bpm_candidates": [
+        {
+          "bpm": 123.1,
+          "raw": 123.09,
+          "salience": -0.008302838672078802
+        },
+        {
+          "bpm": 62.1,
+          "raw": 62.13,
+          "salience": -0.008331903270849744
+        },
+        {
+          "bpm": 91.4,
+          "raw": 91.37,
+          "salience": -0.00858613603289881
+        }
+      ],
+      "key": "F major",
+      "key_confidence": 0.9256,
+      "key_top2": [
+        "F major",
+        "A minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.176897,
+      "bpm_undetermined": true,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0791,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-F-major-snr-20",
+    "group": "key",
+    "truth": {
+      "key": "F major"
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 2045,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 65.2,
+      "bpm_confidence": 34.7,
+      "bpm_candidates": [
+        {
+          "bpm": 65.2,
+          "raw": 65.15,
+          "salience": 0.0027481903041252217
+        },
+        {
+          "bpm": 76.2,
+          "raw": 76.22,
+          "salience": 0.0008509825601294321
+        },
+        {
+          "bpm": 90.2,
+          "raw": 180.39,
+          "salience": 0.0007188930999776544
+        }
+      ],
+      "key": "F major",
+      "key_confidence": 0.928,
+      "key_top2": [
+        "F major",
+        "A minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.177758,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0701,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-Bb-major-snr-clean",
+    "group": "key",
+    "truth": {
+      "key": "Bb major"
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 2010,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 60.3,
+      "bpm_confidence": -12265358.148,
+      "bpm_candidates": [
+        {
+          "bpm": 123.5,
+          "raw": 123.46,
+          "salience": -0.010614295960326056
+        },
+        {
+          "bpm": 89.4,
+          "raw": 89.45,
+          "salience": -0.01140822417432132
+        },
+        {
+          "bpm": 91.0,
+          "raw": 181.94,
+          "salience": -0.011500874254069435
+        }
+      ],
+      "key": "A# major",
+      "key_confidence": 0.8853,
+      "key_top2": [
+        "A# major",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.176898,
+      "bpm_undetermined": true,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0752,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-Bb-major-snr-20",
+    "group": "key",
+    "truth": {
+      "key": "Bb major"
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 2050,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 116.5,
+      "bpm_confidence": 23.581,
+      "bpm_candidates": [
+        {
+          "bpm": 70.7,
+          "raw": 70.75,
+          "salience": 0.0035842828035003932
+        },
+        {
+          "bpm": 116.5,
+          "raw": 116.5,
+          "salience": 0.002828115046068504
+        },
+        {
+          "bpm": 79.4,
+          "raw": 79.35,
+          "salience": 0.0011815976080763878
+        }
+      ],
+      "key": "A# major",
+      "key_confidence": 0.884,
+      "key_top2": [
+        "A# major",
+        "F major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.177771,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0719,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-Eb-major-snr-clean",
+    "group": "key",
+    "truth": {
+      "key": "Eb major"
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 2003,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 65.6,
+      "bpm_confidence": -8936118.605,
+      "bpm_candidates": [
+        {
+          "bpm": 163.8,
+          "raw": 163.8,
+          "salience": -0.007926285082527858
+        },
+        {
+          "bpm": 112.4,
+          "raw": 56.19,
+          "salience": -0.008622649832256237
+        },
+        {
+          "bpm": 65.6,
+          "raw": 65.58,
+          "salience": -0.008936118605130446
+        }
+      ],
+      "key": "A# major",
+      "key_confidence": 0.8504,
+      "key_top2": [
+        "A# major",
+        "D# major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.176909,
+      "bpm_undetermined": true,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.071,
+    "score": {
+      "top1": false,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-Eb-major-snr-20",
+    "group": "key",
+    "truth": {
+      "key": "Eb major"
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 2043,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 88.3,
+      "bpm_confidence": 28.7,
+      "bpm_candidates": [
+        {
+          "bpm": 88.3,
+          "raw": 88.33,
+          "salience": 0.009386601857834789
+        },
+        {
+          "bpm": 77.6,
+          "raw": 77.61,
+          "salience": 0.0042112891981575555
+        },
+        {
+          "bpm": 139.9,
+          "raw": 139.89,
+          "salience": -0.0006752239270660964
+        }
+      ],
+      "key": "A# major",
+      "key_confidence": 0.8484,
+      "key_top2": [
+        "A# major",
+        "G minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.177821,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0698,
+    "score": {
+      "top1": false,
+      "top2": false,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-A-minor-snr-clean",
+    "group": "key",
+    "truth": {
+      "key": "A minor"
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 2021,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 76.9,
+      "bpm_confidence": -10365231.97,
+      "bpm_candidates": [
+        {
+          "bpm": 133.5,
+          "raw": 133.52,
+          "salience": -0.009729177400447516
+        },
+        {
+          "bpm": 153.5,
+          "raw": 153.48,
+          "salience": -0.009746742435305619
+        },
+        {
+          "bpm": 105.2,
+          "raw": 105.23,
+          "salience": -0.009922942865540962
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.8994,
+      "key_top2": [
+        "A minor",
+        "E minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.176889,
+      "bpm_undetermined": true,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0748,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-A-minor-snr-20",
+    "group": "key",
+    "truth": {
+      "key": "A minor"
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 2061,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 162.9,
+      "bpm_confidence": 38.496,
+      "bpm_candidates": [
+        {
+          "bpm": 162.9,
+          "raw": 162.94,
+          "salience": 0.012835039637215856
+        },
+        {
+          "bpm": 66.7,
+          "raw": 66.74,
+          "salience": 0.001524372587177861
+        },
+        {
+          "bpm": 99.8,
+          "raw": 99.76,
+          "salience": -0.0008804853967009304
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.9031,
+      "key_top2": [
+        "A minor",
+        "E minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.177789,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0727,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-E-minor-snr-clean",
+    "group": "key",
+    "truth": {
+      "key": "E minor"
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 2016,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 70.4,
+      "bpm_confidence": -11917508.028,
+      "bpm_candidates": [
+        {
+          "bpm": 90.5,
+          "raw": 90.47,
+          "salience": -0.011378966555546105
+        },
+        {
+          "bpm": 105.9,
+          "raw": 105.86,
+          "salience": -0.011492336763924443
+        },
+        {
+          "bpm": 70.4,
+          "raw": 70.39,
+          "salience": -0.01191750802752004
+        }
+      ],
+      "key": "E minor",
+      "key_confidence": 0.873,
+      "key_top2": [
+        "E minor",
+        "B minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.176885,
+      "bpm_undetermined": true,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0763,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-E-minor-snr-20",
+    "group": "key",
+    "truth": {
+      "key": "E minor"
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 2056,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 118.6,
+      "bpm_confidence": 27.341,
+      "bpm_candidates": [
+        {
+          "bpm": 118.6,
+          "raw": 59.32,
+          "salience": 0.0047850175319778835
+        },
+        {
+          "bpm": 84.5,
+          "raw": 84.46,
+          "salience": 0.004644596973786986
+        },
+        {
+          "bpm": 66.2,
+          "raw": 66.21,
+          "salience": 0.001674458773420142
+        }
+      ],
+      "key": "E minor",
+      "key_confidence": 0.8718,
+      "key_top2": [
+        "E minor",
+        "B minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.177772,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0822,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-B-minor-snr-clean",
+    "group": "key",
+    "truth": {
+      "key": "B minor"
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 2023,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 75.4,
+      "bpm_confidence": -10973141.027,
+      "bpm_candidates": [
+        {
+          "bpm": 88.9,
+          "raw": 88.91,
+          "salience": -0.009837539758545715
+        },
+        {
+          "bpm": 123.6,
+          "raw": 123.58,
+          "salience": -0.009838446791033476
+        },
+        {
+          "bpm": 149.8,
+          "raw": 149.8,
+          "salience": -0.009999700022152462
+        }
+      ],
+      "key": "B minor",
+      "key_confidence": 0.9046,
+      "key_top2": [
+        "B minor",
+        "D major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.17689,
+      "bpm_undetermined": true,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.078,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-B-minor-snr-20",
+    "group": "key",
+    "truth": {
+      "key": "B minor"
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 2063,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 100.0,
+      "bpm_confidence": 14.71,
+      "bpm_candidates": [
+        {
+          "bpm": 61.4,
+          "raw": 61.41,
+          "salience": 0.007908295997573016
+        },
+        {
+          "bpm": 100.0,
+          "raw": 50.02,
+          "salience": 0.0054763727024416085
+        },
+        {
+          "bpm": 107.2,
+          "raw": 53.6,
+          "salience": 0.004630903225353119
+        }
+      ],
+      "key": "B minor",
+      "key_confidence": 0.9069,
+      "key_top2": [
+        "B minor",
+        "D major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.177763,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.077,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-D-minor-snr-clean",
+    "group": "key",
+    "truth": {
+      "key": "D minor"
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 2014,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 72.3,
+      "bpm_confidence": -11832953.627,
+      "bpm_candidates": [
+        {
+          "bpm": 91.2,
+          "raw": 182.31,
+          "salience": -0.011240620997021342
+        },
+        {
+          "bpm": 100.7,
+          "raw": 100.65,
+          "salience": -0.011420124651529574
+        },
+        {
+          "bpm": 120.1,
+          "raw": 120.09,
+          "salience": -0.011505243393678678
+        }
+      ],
+      "key": "D minor",
+      "key_confidence": 0.882,
+      "key_top2": [
+        "D minor",
+        "A minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.176893,
+      "bpm_undetermined": true,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.084,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-D-minor-snr-20",
+    "group": "key",
+    "truth": {
+      "key": "D minor"
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 2054,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 84.3,
+      "bpm_confidence": 34.728,
+      "bpm_candidates": [
+        {
+          "bpm": 84.3,
+          "raw": 84.34,
+          "salience": 0.00859548555774431
+        },
+        {
+          "bpm": 114.9,
+          "raw": 57.44,
+          "salience": 0.002997760519153273
+        },
+        {
+          "bpm": 95.3,
+          "raw": 190.65,
+          "salience": 0.002512205571785185
+        }
+      ],
+      "key": "D minor",
+      "key_confidence": 0.8791,
+      "key_top2": [
+        "D minor",
+        "A minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.177799,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0826,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-G-minor-snr-clean",
+    "group": "key",
+    "truth": {
+      "key": "G minor"
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 2019,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 66.3,
+      "bpm_confidence": -9032252.281,
+      "bpm_candidates": [
+        {
+          "bpm": 166.3,
+          "raw": 166.31,
+          "salience": -0.007160916663364451
+        },
+        {
+          "bpm": 113.1,
+          "raw": 113.08,
+          "salience": -0.007272453490870002
+        },
+        {
+          "bpm": 100.0,
+          "raw": 199.93,
+          "salience": -0.008097409924635934
+        }
+      ],
+      "key": "G minor",
+      "key_confidence": 0.8585,
+      "key_top2": [
+        "G minor",
+        "D minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.176901,
+      "bpm_undetermined": true,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.08,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-G-minor-snr-20",
+    "group": "key",
+    "truth": {
+      "key": "G minor"
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 2059,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 86.0,
+      "bpm_confidence": 35.066,
+      "bpm_candidates": [
+        {
+          "bpm": 86.0,
+          "raw": 86.0,
+          "salience": 0.00532908175627193
+        },
+        {
+          "bpm": 113.9,
+          "raw": 56.93,
+          "salience": 0.0007237659391302032
+        },
+        {
+          "bpm": 125.4,
+          "raw": 125.42,
+          "salience": -0.002603035249064344
+        }
+      ],
+      "key": "G minor",
+      "key_confidence": 0.8626,
+      "key_top2": [
+        "G minor",
+        "D minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.1778,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0895,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-C-minor-snr-clean",
+    "group": "key",
+    "truth": {
+      "key": "C minor"
+    },
+    "meta": {
+      "snr_db": null,
+      "seed": 2012,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 76.8,
+      "bpm_confidence": -10538530.14,
+      "bpm_candidates": [
+        {
+          "bpm": 95.7,
+          "raw": 95.72,
+          "salience": -0.010139057644482863
+        },
+        {
+          "bpm": 129.4,
+          "raw": 129.44,
+          "salience": -0.010210133449070012
+        },
+        {
+          "bpm": 85.6,
+          "raw": 85.58,
+          "salience": -0.010516289570282018
+        }
+      ],
+      "key": "C minor",
+      "key_confidence": 0.8479,
+      "key_top2": [
+        "C minor",
+        "G minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.176915,
+      "bpm_undetermined": true,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0891,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "key-C-minor-snr-20",
+    "group": "key",
+    "truth": {
+      "key": "C minor"
+    },
+    "meta": {
+      "snr_db": 20,
+      "seed": 2052,
+      "duration": 20.0
+    },
+    "estimate": {
+      "bpm": 73.0,
+      "bpm_confidence": 32.721,
+      "bpm_candidates": [
+        {
+          "bpm": 73.0,
+          "raw": 72.96,
+          "salience": 0.005739123159466033
+        },
+        {
+          "bpm": 81.2,
+          "raw": 81.16,
+          "salience": 0.0008736118184029903
+        },
+        {
+          "bpm": 92.8,
+          "raw": 185.68,
+          "salience": -0.003123897436436045
+        }
+      ],
+      "key": "C minor",
+      "key_confidence": 0.841,
+      "key_top2": [
+        "C minor",
+        "G minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.177784,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0859,
+    "score": {
+      "top1": true,
+      "top2": true,
+      "false_undetermined": false
+    }
+  },
+  {
+    "id": "neg-silence-0",
+    "group": "negative",
+    "truth": {
+      "undetermined": true
+    },
+    "meta": {
+      "kind": "silence",
+      "seed": 0
+    },
+    "estimate": {
+      "bpm": null,
+      "bpm_confidence": 0.0,
+      "bpm_candidates": [],
+      "key": "C major",
+      "key_confidence": 0.0,
+      "key_top2": [
+        "C major",
+        "C minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.0,
+      "bpm_undetermined": true,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0903,
+    "score": {
+      "true_undetermined": true
+    }
+  },
+  {
+    "id": "neg-silence-1",
+    "group": "negative",
+    "truth": {
+      "undetermined": true
+    },
+    "meta": {
+      "kind": "silence",
+      "seed": 1
+    },
+    "estimate": {
+      "bpm": null,
+      "bpm_confidence": 0.0,
+      "bpm_candidates": [],
+      "key": "C major",
+      "key_confidence": 0.0,
+      "key_top2": [
+        "C major",
+        "C minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.0,
+      "bpm_undetermined": true,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0896,
+    "score": {
+      "true_undetermined": true
+    }
+  },
+  {
+    "id": "neg-noise-0",
+    "group": "negative",
+    "truth": {
+      "undetermined": true
+    },
+    "meta": {
+      "kind": "noise",
+      "seed": 0
+    },
+    "estimate": {
+      "bpm": 98.9,
+      "bpm_confidence": 7.194,
+      "bpm_candidates": [
+        {
+          "bpm": 98.9,
+          "raw": 98.94,
+          "salience": 0.09081403131160853
+        },
+        {
+          "bpm": 118.0,
+          "raw": 117.96,
+          "salience": 0.057024454336946084
+        },
+        {
+          "bpm": 70.2,
+          "raw": 70.17,
+          "salience": 0.04836100654392939
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.3631,
+      "key_top2": [
+        "A minor",
+        "D major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.050074,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.08,
+    "score": {
+      "true_undetermined": false
+    }
+  },
+  {
+    "id": "neg-noise-1",
+    "group": "negative",
+    "truth": {
+      "undetermined": true
+    },
+    "meta": {
+      "kind": "noise",
+      "seed": 1
+    },
+    "estimate": {
+      "bpm": 110.3,
+      "bpm_confidence": 3.997,
+      "bpm_candidates": [
+        {
+          "bpm": 74.7,
+          "raw": 74.72,
+          "salience": 0.07623140114303138
+        },
+        {
+          "bpm": 91.4,
+          "raw": 182.85,
+          "salience": 0.0647418056646375
+        },
+        {
+          "bpm": 67.5,
+          "raw": 67.47,
+          "salience": 0.06286516630145124
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.3841,
+      "key_top2": [
+        "A minor",
+        "D major"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.049919,
+      "bpm_undetermined": false,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0804,
+    "score": {
+      "true_undetermined": false
+    }
+  },
+  {
+    "id": "neg-short-0",
+    "group": "negative",
+    "truth": {
+      "undetermined": true
+    },
+    "meta": {
+      "kind": "short",
+      "seed": 0
+    },
+    "estimate": {
+      "bpm": 154.7,
+      "bpm_confidence": 3.085,
+      "bpm_candidates": [
+        {
+          "bpm": 154.7,
+          "raw": 154.65,
+          "salience": 0.32062182476243567
+        }
+      ],
+      "key": "F major",
+      "key_confidence": 0.3367,
+      "key_top2": [
+        "F major",
+        "A# major"
+      ]
+    },
+    "flags": {
+      "duration": 0.5,
+      "rms": 0.086838,
+      "bpm_undetermined": true,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0023,
+    "score": {
+      "true_undetermined": true
+    }
+  },
+  {
+    "id": "neg-short-1",
+    "group": "negative",
+    "truth": {
+      "undetermined": true
+    },
+    "meta": {
+      "kind": "short",
+      "seed": 1
+    },
+    "estimate": {
+      "bpm": 154.0,
+      "bpm_confidence": 2.884,
+      "bpm_candidates": [
+        {
+          "bpm": 154.0,
+          "raw": 154.05,
+          "salience": 0.2891383983981267
+        }
+      ],
+      "key": "D minor",
+      "key_confidence": 0.4412,
+      "key_top2": [
+        "D minor",
+        "D major"
+      ]
+    },
+    "flags": {
+      "duration": 0.5,
+      "rms": 0.078353,
+      "bpm_undetermined": true,
+      "key_undetermined": true
+    },
+    "elapsed_s": 0.0024,
+    "score": {
+      "true_undetermined": true
+    }
+  },
+  {
+    "id": "neg-atonal-0",
+    "group": "negative",
+    "truth": {
+      "undetermined": true
+    },
+    "meta": {
+      "kind": "atonal",
+      "seed": 0
+    },
+    "estimate": {
+      "bpm": 116.4,
+      "bpm_confidence": 8.729,
+      "bpm_candidates": [
+        {
+          "bpm": 116.4,
+          "raw": 58.22,
+          "salience": 0.775629996309748
+        },
+        {
+          "bpm": 110.0,
+          "raw": 55.02,
+          "salience": 0.7134198090452674
+        },
+        {
+          "bpm": 61.9,
+          "raw": 61.87,
+          "salience": 0.6147227518535031
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.5514,
+      "key_top2": [
+        "A minor",
+        "B minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.051156,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0758,
+    "score": {
+      "true_undetermined": false
+    }
+  },
+  {
+    "id": "neg-atonal-1",
+    "group": "negative",
+    "truth": {
+      "undetermined": true
+    },
+    "meta": {
+      "kind": "atonal",
+      "seed": 1
+    },
+    "estimate": {
+      "bpm": 116.4,
+      "bpm_confidence": 8.729,
+      "bpm_candidates": [
+        {
+          "bpm": 116.4,
+          "raw": 58.22,
+          "salience": 0.775629996309748
+        },
+        {
+          "bpm": 110.0,
+          "raw": 55.02,
+          "salience": 0.7134198090452674
+        },
+        {
+          "bpm": 61.9,
+          "raw": 61.87,
+          "salience": 0.6147227518535031
+        }
+      ],
+      "key": "A minor",
+      "key_confidence": 0.5514,
+      "key_top2": [
+        "A minor",
+        "B minor"
+      ]
+    },
+    "flags": {
+      "duration": 20.0,
+      "rms": 0.051156,
+      "bpm_undetermined": false,
+      "key_undetermined": false
+    },
+    "elapsed_s": 0.0794,
+    "score": {
+      "true_undetermined": false
+    }
+  }
+]
