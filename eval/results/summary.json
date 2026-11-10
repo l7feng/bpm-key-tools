@@ -1,0 +1,144 @@
+{
+  "generated_at": "2026-11-06 14:35:53",
+  "environment": {
+    "python": "3.12.10",
+    "numpy": "2.3.4",
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "config": {
+    "sample_rate": 22050,
+    "duration_s": 20.0,
+    "n_fft": 2048,
+    "hop": 256,
+    "bpm_grid": [
+      60,
+      75,
+      90,
+      100,
+      110,
+      120,
+      128,
+      140,
+      150,
+      170,
+      180
+    ],
+    "major_roots": [
+      "C",
+      "G",
+      "D",
+      "F",
+      "Bb",
+      "Eb"
+    ],
+    "minor_roots": [
+      "A",
+      "E",
+      "B",
+      "D",
+      "G",
+      "C"
+    ],
+    "progression_degrees": [
+      0,
+      3,
+      4,
+      0
+    ],
+    "snr_db_bpm": [
+      null,
+      20,
+      10
+    ],
+    "snr_db_key": [
+      null,
+      20
+    ],
+    "negative_kinds": [
+      "silence",
+      "noise",
+      "short",
+      "atonal"
+    ],
+    "search_bpm_range": [
+      50.0,
+      200.0
+    ],
+    "fold_bpm_range": [
+      60.0,
+      180.0
+    ]
+  },
+  "counts": {
+    "total": 65,
+    "bpm": 33,
+    "key": 24,
+    "negative": 8
+  },
+  "metrics": {
+    "bpm": {
+      "n": 33,
+      "strict_acc": 0.7273,
+      "tolerance_acc": 0.7273,
+      "octave_ok_rate": 0.9091,
+      "false_undetermined_rate": 0.0
+    },
+    "key": {
+      "n": 24,
+      "top1_acc": 0.9167,
+      "top2_acc": 0.9583,
+      "false_undetermined_rate": 0.0
+    },
+    "negative": {
+      "n": 8,
+      "true_undetermined_rate": 0.5
+    },
+    "timing_s": {
+      "mean": 0.0721,
+      "p95": 0.0885,
+      "max": 0.0903
+    }
+  },
+  "by_snr": {
+    "clean": {
+      "bpm": {
+        "n": 11,
+        "strict_acc": 0.7273,
+        "tolerance_acc": 0.7273,
+        "octave_ok_rate": 0.9091,
+        "false_undetermined_rate": 0.0
+      },
+      "key": {
+        "n": 12,
+        "top1_acc": 0.9167,
+        "top2_acc": 1.0,
+        "false_undetermined_rate": 0.0
+      }
+    },
+    "20": {
+      "bpm": {
+        "n": 11,
+        "strict_acc": 0.7273,
+        "tolerance_acc": 0.7273,
+        "octave_ok_rate": 0.9091,
+        "false_undetermined_rate": 0.0
+      },
+      "key": {
+        "n": 12,
+        "top1_acc": 0.9167,
+        "top2_acc": 0.9167,
+        "false_undetermined_rate": 0.0
+      }
+    },
+    "10": {
+      "bpm": {
+        "n": 11,
+        "strict_acc": 0.7273,
+        "tolerance_acc": 0.7273,
+        "octave_ok_rate": 0.9091,
+        "false_undetermined_rate": 0.0
+      },
+      "key": null
+    }
+  }
+}

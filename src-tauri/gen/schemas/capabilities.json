@@ -1,0 +1,1 @@
+{"main-capability":{"identifier":"main-capability","description":"BPM 调性识别主窗口的最小权限集合","local":true,"windows":["main"],"permissions":["core:default"]}}

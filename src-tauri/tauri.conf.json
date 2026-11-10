@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "BPM Key Tools",
+  "version": "0.1.0",
+  "identifier": "local.bpmkeytool.desktop",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "devUrl": "http://127.0.0.1:5174",
+    "beforeBuildCommand": "npm run build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "BPM Key Tools",
+        "width": 1180,
+        "height": 780,
+        "minWidth": 900,
+        "minHeight": 600
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:"
+    }
+  },
+  "bundle": {
+    "active": false,
+    "publisher": "BPM Key Tools",
+    "copyright": "© 2026",
+    "icon": ["icons/icon.ico", "icons/icon.png"]
+  }
+}
