@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "BPM Key Tool",
+  "productName": "BPM Key Tools",
   "version": "0.1.0",
   "identifier": "local.bpmkeytool.desktop",
   "build": {
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "BPM 调性识别",
+        "title": "BPM Key Tools",
         "width": 1180,
         "height": 780,
         "minWidth": 900,
@@ -25,7 +25,7 @@
   },
   "bundle": {
     "active": false,
-    "publisher": "BPM 调性识别",
+    "publisher": "BPM Key Tools",
     "copyright": "© 2026",
     "icon": ["icons/icon.ico", "icons/icon.png"]
   }

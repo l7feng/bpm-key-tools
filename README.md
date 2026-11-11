@@ -1,4 +1,4 @@
-# bpm-key-tool
+# BPM Key Tools
 
 独立桌面工具：识别音频的 BPM（Beats Per Minute，每分钟拍数）与调性（musical key，主音与调式），自带界面、可独立分发。
 
