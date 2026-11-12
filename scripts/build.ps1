@@ -3,9 +3,9 @@
 
 $ErrorActionPreference = "Stop"
 
-$env:PATH = "D:\Ai-Files\Tools\BuildEnv\sound-workbench-rust\cargo\bin;" + $env:PATH
-$env:RUSTUP_HOME = "D:\Ai-Files\Tools\BuildEnv\sound-workbench-rust\rustup"
-$env:CARGO_HOME = "D:\Ai-Files\Tools\BuildEnv\sound-workbench-rust\cargo"
+$env:PATH = "D:\Ai-Files\Tools\BuildEnv\sfx-tools-rust\cargo\bin;" + $env:PATH
+$env:RUSTUP_HOME = "D:\Ai-Files\Tools\BuildEnv\sfx-tools-rust\rustup"
+$env:CARGO_HOME = "D:\Ai-Files\Tools\BuildEnv\sfx-tools-rust\cargo"
 
 Set-Location (Split-Path $PSScriptRoot -Parent)
 

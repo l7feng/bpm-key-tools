@@ -64,9 +64,7 @@ export default function App() {
     <div className="app">
       <header className="topbar">
         <div className="brand">
-          <span className="logo" aria-hidden="true">
-            ♩
-          </span>
+          <img className="logo" src="/icons/logo.png" alt="" aria-hidden="true" />
           <div>
             <h1>BPM 调性识别</h1>
             <p className="sub">v0.1.0 · 复核闸门骨架</p>

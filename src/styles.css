@@ -58,15 +58,9 @@ button {
 }
 
 .logo {
-  display: grid;
-  place-items: center;
   width: 36px;
   height: 36px;
-  border-radius: 9px;
-  background: linear-gradient(145deg, #3a2f1a, #241d10);
-  color: var(--accent);
-  font-size: 20px;
-  border: 1px solid #4a3a1e;
+  object-fit: contain;
 }
 
 .brand h1 {
