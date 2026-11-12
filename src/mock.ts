@@ -2,6 +2,8 @@ export type ReviewState = "pending" | "confirmed" | "undetermined" | "skipped";
 
 export type Track = {
   id: string;
+  /** 真实文件绝对路径；演示数据为 null。 */
+  path?: string | null;
   fileName: string;
   durationSec: number;
   sizeBytes: number;
@@ -12,6 +14,10 @@ export type Track = {
   keyTop2: string[];
   keyConfidence: number;
   lowConfidence: boolean;
+  /** 文件里已存在的 BPM（TBPM）标签文本。 */
+  bpmExisting?: string | null;
+  /** 文件里已存在的调性（TKEY / INITIALKEY）标签文本。 */
+  keyExisting?: string | null;
 };
 
 /**
