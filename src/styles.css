@@ -1,14 +1,28 @@
+/* 强调色统一为冷蓝（与 SFX Tools / 7F-IDW 设计系统的 action 色阶一致）：
+   只在这里写死颜色，界面其余位置一律引用变量；原先的暖金色强调（琥珀金强调色、棕金描边与棕金底）已全部移除。 */
 :root {
+  color-scheme: dark;
+
   --bg: #12141a;
   --panel: #1a1d26;
   --panel-2: #20242f;
   --border: #2a2f3a;
   --text: #e6e9f0;
   --muted: #8b93a7;
-  --accent: #d4a24c;
-  --ok: #3fb950;
-  --warn: #d29922;
-  --danger: #f85149;
+
+  /* 强调色 · 冷蓝 */
+  --accent: #6aa9e0;
+  --accent-hover: #8fc2ec;
+  --accent-pressed: #4d92cf;
+  --accent-line: #2f6ea8;
+  --accent-wash: #15283a;
+  --accent-soft: rgba(106, 169, 224, 0.08);
+  --accent-glow: rgba(106, 169, 224, 0.45);
+
+  /* 状态色 */
+  --ok: #8dcbb7;
+  --danger: #d4635c;
+
   font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
 }
 
@@ -58,8 +72,8 @@ button {
 }
 
 .logo {
-  width: 36px;
   height: 36px;
+  width: auto;
   object-fit: contain;
 }
 
@@ -85,9 +99,9 @@ button {
 }
 
 .badge-warn {
-  color: var(--warn);
-  border-color: #4a3a1e;
-  background: #221c10;
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--accent-wash);
 }
 
 .body {
@@ -146,7 +160,7 @@ button {
 
 .row-wrap.row-active-wrap .row {
   background: var(--panel-2);
-  border-color: #4a3a1e;
+  border-color: var(--accent-line);
 }
 
 .play-btn {
@@ -162,7 +176,7 @@ button {
 }
 
 .play-btn:hover {
-  border-color: #4a3a1e;
+  border-color: var(--accent-line);
 }
 
 .play-btn[disabled] {
@@ -197,7 +211,7 @@ button {
 
 .row-active {
   background: var(--panel-2);
-  border-color: #4a3a1e;
+  border-color: var(--accent-line);
 }
 
 .row-name {
@@ -228,14 +242,14 @@ button {
 
 .chip-confirmed {
   color: var(--ok);
-  border-color: #1f4a26;
-  background: #102016;
+  border-color: #1d4038;
+  background: #102420;
 }
 
 .chip-undetermined {
   color: var(--danger);
-  border-color: #4a1f1f;
-  background: #201010;
+  border-color: #4a2a27;
+  background: #241515;
 }
 
 .chip-skipped {
@@ -270,9 +284,9 @@ button {
   padding: 10px 12px;
   border-radius: 8px;
   font-size: 12.5px;
-  color: var(--warn);
-  background: #221c10;
-  border: 1px solid #4a3a1e;
+  color: var(--accent);
+  background: var(--accent-wash);
+  border: 1px solid var(--accent-line);
 }
 
 .player-block {
@@ -289,23 +303,88 @@ button {
 .play-big {
   min-width: 104px;
   white-space: nowrap;
+  flex: none;
+  align-self: center;
 }
 
-.player-time {
-  font-size: 12.5px;
-  color: var(--muted);
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
-.seek {
+/* ---------- 波形预览（试听旁边） ---------- */
+.wave-zone {
   flex: 1;
-  min-width: 120px;
-  accent-color: var(--accent);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-.seek[disabled] {
-  opacity: 0.4;
+.waveform {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  touch-action: none;
+  overflow: hidden;
+}
+
+.waveform:hover {
+  border-color: var(--accent-line);
+}
+
+.waveform:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent-glow);
+}
+
+.waveform-disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
+.waveform-canvas {
+  display: block;
+}
+
+.wave-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
+  border-radius: 8px;
+  border: 1px dashed var(--border);
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--muted);
+  font-size: 12.5px;
+  padding: 0 12px;
+  text-align: center;
+}
+
+.wave-error {
+  color: var(--danger);
+  border-color: var(--danger);
+}
+
+.wave-axis {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.wave-tip {
+  color: var(--muted);
+  opacity: 0.7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
 }
 
 .field {
@@ -321,7 +400,7 @@ button {
 
 .field:focus {
   outline: none;
-  border-color: #4a3a1e;
+  border-color: var(--accent-line);
 }
 
 .cards {
@@ -374,14 +453,28 @@ button {
 }
 
 .btn:hover {
-  border-color: #4a3a1e;
+  border-color: var(--accent-line);
+  color: var(--accent-hover);
 }
 
 .btn-primary {
-  background: #3a2f1a;
-  border-color: #4a3a1e;
+  background: var(--accent-wash);
+  border-color: var(--accent-line);
   color: var(--accent);
   font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: #1b3448;
+  border-color: var(--accent);
+  color: var(--accent-hover);
+}
+
+.btn-primary:disabled {
+  background: var(--panel-2);
+  border-color: var(--border);
+  color: var(--muted);
+  cursor: default;
 }
 
 .btn-ghost {
@@ -470,6 +563,24 @@ button {
   color: #b9c0d0;
 }
 
+.statusbar {
+  flex: none;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+}
+
+.status-version {
+  color: var(--muted);
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
 .muted {
   color: var(--muted);
 }
@@ -478,4 +589,50 @@ button {
   padding: 40px;
   color: var(--muted);
   text-align: center;
+}
+
+/* ---------- 拖入文件夹 ---------- */
+.list-hint {
+  padding: 0 12px 8px;
+  font-size: 11.5px;
+  color: var(--muted);
+  opacity: 0.75;
+  border-bottom: 1px solid var(--border);
+}
+
+.app-drop .body {
+  opacity: 0.7;
+}
+
+.drop-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 16, 22, 0.68);
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+
+.drop-card {
+  padding: 26px 40px;
+  border-radius: 14px;
+  border: 1.5px dashed var(--accent);
+  background: var(--accent-wash);
+  box-shadow: 0 0 0 1px var(--accent-glow), 0 24px 80px rgba(0, 0, 0, 0.55);
+  text-align: center;
+}
+
+.drop-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--accent-hover);
+  margin-bottom: 6px;
+}
+
+.drop-sub {
+  font-size: 12px;
+  color: var(--muted);
 }
