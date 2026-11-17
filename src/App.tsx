@@ -49,7 +49,7 @@ type EngineInfo = { id: string; label: string; ready: boolean; note: string };
 
 const FALLBACK_ENGINES: EngineInfo[] = [
   { id: "dsp", label: "本地 DSP", ready: true, note: "经典信号处理：拍点自相关 + 调性音阶匹配" },
-  { id: "model", label: "神经网络模型", ready: false, note: "需先确认权重许可与打包体积，未接入" },
+  { id: "model", label: "神经网络模型", ready: false, note: "需配置外部 runner（model-engine.json）" },
 ];
 
 function pct(v: number): string {
@@ -291,11 +291,19 @@ export default function App() {
 
   const analysisKey = (path: string, eng: string) => `${path}#${eng}`;
 
+  /** 当前引擎是否可用（模型引擎要配了 runner 才算）。 */
+  const engineReady = engines.find((e) => e.id === engine)?.ready ?? true;
+  const engineNote = engines.find((e) => e.id === engine)?.note ?? "";
+
   /** 对单个文件跑一次分析。只产出候选，不写任何标签。 */
   const runAnalysis = useCallback(
     async (track: Track) => {
       if (demo || !track.path) {
         addLog(`[${stamp()}] 演示数据没有真实音频，无法分析`);
+        return;
+      }
+      if (engineReady === false) {
+        addLog(`[${stamp()}] ${engine.toUpperCase()} 引擎不可用：${engineNote}`);
         return;
       }
       const path = track.path;
@@ -317,12 +325,16 @@ export default function App() {
         setAnalyzeBusy(null);
       }
     },
-    [addLog, demo, engine]
+    [addLog, demo, engine, engineReady, engineNote]
   );
 
   const analyzeAll = async () => {
     if (demo) {
       addLog(`[${stamp()}] 演示态：没有真实文件可分析`);
+      return;
+    }
+    if (engineReady === false) {
+      addLog(`[${stamp()}] ${engine.toUpperCase()} 引擎不可用：${engineNote}`);
       return;
     }
     const targets = tracks.filter((t) => t.path);
@@ -588,18 +600,21 @@ export default function App() {
                     {engines.map((en) => (
                       <option key={en.id} value={en.id} disabled={!en.ready}>
                         {en.label}
-                        {en.ready ? "" : "（未接入）"}
+                        {en.ready ? "" : "（未配置）"}
                       </option>
                     ))}
                   </select>
                   <button
                     className="btn btn-sm btn-primary"
                     onClick={() => void runAnalysis(selected)}
-                    disabled={!realFile || analyzeBusy === selected.path}
+                    disabled={!realFile || analyzeBusy === selected.path || !engineReady}
                   >
                     {analyzeBusy === selected.path ? "分析中…" : "运行分析"}
                   </button>
                 </div>
+                {!engineReady && (
+                  <p className="analysis-hint">{engineNote}</p>
+                )}
 
                 {selectedAnalysis ? (
                   <>

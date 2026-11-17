@@ -1,0 +1,28 @@
+{
+  "name": "musiCNN + tempo-net（示例，按实际模型改）",
+  "sampleRate": 22050,
+  "mel": {
+    "nFft": 512,
+    "hop": 256,
+    "nMels": 128,
+    "fmin": 30.0,
+    "fmax": 11000.0,
+    "normalize": "perMel"
+  },
+  "tempo": {
+    "onnx": "tempo.onnx",
+    "chunkFrames": 187,
+    "minConfidence": 0.25,
+    "labels": []
+  },
+  "key": {
+    "onnx": "key.onnx",
+    "chunkFrames": 187,
+    "labels": [
+      "A major", "Bb major", "B major", "C major", "Db major", "D major",
+      "Eb major", "E major", "F major", "Gb major", "G major", "Ab major",
+      "A minor", "Bb minor", "B minor", "C minor", "C# minor", "D minor",
+      "Eb minor", "E minor", "F minor", "F# minor", "G minor", "G# minor"
+    ]
+  }
+}

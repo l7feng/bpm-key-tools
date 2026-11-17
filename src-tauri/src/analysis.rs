@@ -49,6 +49,12 @@ pub struct AnalysisResult {
 
 /// 解码成单声道、重采样到 TARGET_RATE 的 PCM。
 fn decode_mono(path: &Path) -> Result<(Vec<f32>, u32, f64), String> {
+    decode_mono_at(path, TARGET_RATE)
+}
+
+/// 解码成单声道、整数倍抽取到 `target` 附近的 PCM。返回（样本，实际采样率，时长）。
+/// 模型引擎用它把音频转成 22.05 kHz WAV 交给外部 runner。
+pub(crate) fn decode_mono_at(path: &Path, target: u32) -> Result<(Vec<f32>, u32, f64), String> {
     let file = std::fs::File::open(path).map_err(|e| format!("打开文件失败：{e}"))?;
     let mss = MediaSourceStream::new(Box::new(file), Default::default());
     let mut hint = Hint::new();
@@ -112,7 +118,7 @@ fn decode_mono(path: &Path) -> Result<(Vec<f32>, u32, f64), String> {
         if sample_buf.is_none() {
             if spec.rate > 0 {
                 rate = spec.rate;
-                decim = ((spec.rate as f64 / TARGET_RATE as f64).round() as usize).max(1);
+                decim = ((spec.rate as f64 / target as f64).round() as usize).max(1);
             }
             sample_buf = Some(SampleBuffer::<f32>::new(decoded.capacity() as u64, spec));
         }

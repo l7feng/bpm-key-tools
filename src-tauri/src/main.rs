@@ -1,6 +1,7 @@
 #![windows_subsystem = "windows"]
 
 mod analysis;
+mod model_engine;
 
 use lofty::config::{ParseOptions, WriteOptions};
 use lofty::file::BoundTaggedFile;
@@ -18,8 +19,8 @@ use symphonia::core::io::MediaSourceStream;
 use symphonia::core::meta::MetadataOptions;
 use symphonia::core::probe::Hint;
 
-/// 供前端查询应用与算法状态。BPM/调性识别已接入本地 DSP 引擎（默认）；
-/// 模型引擎预留接口，未接入前会返回可读错误。
+/// 供前端查询应用与算法状态。默认引擎是本地 DSP；模型引擎走外部 runner，
+/// 配置存在（`model-engine.json`）才可选，否则标灰并给出原因。
 #[tauri::command]
 fn app_info() -> serde_json::Value {
     // 支持「带文件夹启动」：命令行第一个参数若为已存在的目录，界面启动后自动加载它。
@@ -27,16 +28,17 @@ fn app_info() -> serde_json::Value {
         .skip(1)
         .find(|a| Path::new(a).is_dir())
         .map(|a| a.to_string());
+    let (model_ready, model_note) = model_engine::status();
     serde_json::json!({
         "name": "BPM Key Tools",
         "version": env!("CARGO_PKG_VERSION"),
         "algorithm": "dsp",
         "engines": [
             { "id": "dsp", "label": "本地 DSP", "ready": true, "note": "经典信号处理：拍点自相关 + 调性音阶匹配" },
-            { "id": "model", "label": "神经网络模型", "ready": false, "note": "需先确认权重许可与打包体积，未接入" }
+            { "id": "model", "label": "神经网络模型", "ready": model_ready, "note": model_note }
         ],
         "mock": false,
-        "stage": "S4-dsp",
+        "stage": if model_ready { "S4-dsp+model" } else { "S4-dsp" },
         "capabilities": ["scan", "drag_drop", "playback", "waveform", "metadata_write", "analyze"],
         "initialFolder": initial_folder
     })
@@ -442,12 +444,19 @@ async fn waveform_peaks(path: String, buckets: usize) -> Result<WaveformPeaks, S
         .map_err(|e| e.to_string())?
 }
 
-/// 分析单个文件：默认引擎为本地 DSP。只读，不写任何标签。
+/// 分析单个文件：`dsp` 走内置 DSP 内核，`model` 走外部 runner。只读，不写任何标签。
 #[tauri::command]
 async fn analyze_file(path: String, engine: String) -> Result<analysis::AnalysisResult, String> {
-    tauri::async_runtime::spawn_blocking(move || analysis::analyze_file(Path::new(&path), &engine))
-        .await
-        .map_err(|e| e.to_string())?
+    tauri::async_runtime::spawn_blocking(move || {
+        let p = Path::new(&path);
+        match engine.as_str() {
+            "dsp" => analysis::analyze_file(p, "dsp"),
+            "model" => model_engine::analyze(p),
+            other => Err(format!("未知引擎：{other}")),
+        }
+    })
+    .await
+    .map_err(|e| e.to_string())?
 }
 
 /// 拖放解析：拖入文件夹就用它；拖入音频文件就用它所在的文件夹。

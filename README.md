@@ -13,9 +13,9 @@
 | 项 | 状态 |
 | --- | --- |
 | 阶段 | S4 算法接入（0.4.0）：本地 DSP 内核已进产品 |
-| 已完成 | 仓骨架、`eval/` 评测基线、Tauri 2 GUI（React + TS）、真实文件夹扫描、文件夹拖入加载、试听与波形预览、既有标签读取、人工判定写入（TBPM / TKEY）、三通道状态展示、操作记录、release 构建、桌面快捷方式；**本地 DSP 分析（BPM / 调性 / 置信度 / 耗时）、算法候选面板与采用、引擎选择器、批量分析** |
-| 未完成 | 模型引擎（ONNX 路线，接口已留、未接）、L1 结果库落盘、L2 音乐库标签联动、40 条真实标注集评测 harness |
-| 算法路线 | **已拍板：默认 DSP 先行，模型作为可选引擎**。`app_info` 里 `model` 引擎标 `ready:false`，`analyze_file` 收到非 DSP 引擎会明确报「尚未接入」。路线对比见知识库 `88-BPM调性识别工具/03-算法接入路线对比.md` |
+| 已完成 | 仓骨架、`eval/` 评测基线、Tauri 2 GUI（React + TS）、真实文件夹扫描、文件夹拖入加载、试听与波形预览、既有标签读取、人工判定写入（TBPM / TKEY）、三通道状态展示、操作记录、release 构建、桌面快捷方式；**本地 DSP 分析（BPM / 调性 / 置信度 / 耗时）、算法候选面板与采用、引擎选择器、批量分析**；**真实素材评测 harness**；**模型引擎接入口（外部 runner，配置存在才可选）** |
+| 未完成 | 模型引擎的**真实权重与标定**（链路已通、网络代理当前不通，权重未下）、L1 结果库落盘、L2 音乐库标签联动、40 条真实标注集 |
+| 算法路线 | **已拍板：默认 DSP 先行，模型作为可选引擎**。`app_info` 的 `model` 引擎按配置返回 `ready`；未配置时界面标灰并给出原因，`analyze_file` 收到 `model` 但无配置会返回可读错误，不会退回 DSP 冒充模型结果。路线对比见知识库 `88-BPM调性识别工具/03-算法接入路线对比.md` |
 | 远端 | `https://github.com/l7feng/bpm-key-tools.git`（`origin/main`） |
 
 **列表与卡片里的算法值来自本机 DSP**：分析只产出候选，点「采用」填进输入框，仍需人工复核后才写回原文件；纯音 / 稳态素材 / 弱拍点会明确给 undetermined 并说明原因。
@@ -31,7 +31,8 @@ Tauri 2 + React + Rust。算法内核与界面解耦，只留可插拔接口；�
 | `eval/` | 评测基线：合成信号生成、经典 DSP 基线、指标脚本与可复现报告。自 `D:/Ai-Files/Projects/bpm-key-eval/` 迁入 |
 | `src/` | 前端（React 19 + TypeScript）：`App.tsx` 复核队列与扫描/试听流程、`Waveform.tsx` 波形画布、`mock.ts` 演示数据、`styles.css` 设计令牌与样式 |
 | `src-tauri/` | Rust 侧：`Cargo.toml`、`tauri.conf.json`、`capabilities/main.json`、`src/main.rs`（扫描 / 波形峰值 / 元数据写回 / 拖放解析 / `app_info` / `analyze_file`）、`src/analysis.rs`（DSP 算法内核，含自写 FFT 与单元测试）、`icons/` |
-| `scripts/build.ps1` | 固化便携 Rust 工具链的构建脚本 |
+| `scripts/build.ps1` | 固化便携 Rust 工具链的构建脚本（检查 `npx tauri build` 退出码与产物时间戳，失败直接 `exit` 非 0） |
+| `engine/` | 模型引擎：`model_runner.py`（参考 runner：numpy mel + onnxruntime）、`spec.example.json`、`README.md`（配置、输出契约、权重许可说明） |
 
 ## 设计口径
 
@@ -42,7 +43,18 @@ Tauri 2 + React + Rust。算法内核与界面解耦，只留可插拔接口；�
 
 全程无第三方算法依赖：FFT 是自写的迭代 radix-2，解码复用 symphonia（0.3.0 起已在依赖里），新增 crate 数为 0。
 
-**解耦点**：`analyze_file(path, engine)` 是唯一入口。`engine = dsp / default / auto` 走本地内核；其它值直接返回「引擎尚未接入」，所以模型路线接进来时不用改界面。
+**解耦点**：`analyze_file(path, engine)` 是唯一入口。`engine = dsp / default / auto` 走本地内核；`model` 走外部 runner（详见下节）；其它值直接返回可读错误。
+
+## 模型引擎（可选，外部 runner）
+
+不把 onnxruntime 塞进安装包：Rust 只解码音频、传路径、解析 JSON，推理在外部进程里跑。
+
+- 配置：`%APPDATA%\BPM Key Tools\model-engine.json`（`BPM_MODEL_CONFIG` 可覆盖），字段 `exe` / `args`（`{audio}`、`{config}` 占位符）/ `timeoutSec` / `modelsDir`。
+- 状态：`app_info` 的 `model` 引擎按配置返回 `ready`；`modelsDir` 里没有 `.onnx` 时判未就绪，界面标灰并在面板下方给出原因。
+- 契约：runner 往 stdout 打一行 JSON（`bpm` / `bpmConfidence` / `key` / `keyConfidence` / `keyTop2` / `model` / `notes`），置信不足给 `null`。
+- 参考 runner：`engine/model_runner.py`（numpy 自算 log-mel + onnxruntime），权重与许可证留在使用者侧；`engine/README.md` 有 spec 说明与权重许可提示。
+- 现状：链路与解析已有用例覆盖，**真实权重尚未落盘**（网络代理不通），所以「模型 vs DSP」对比还下不了结论。
+
 
 **BPM**
 1. 解码：symphonia → 单声道混音 → 整数倍抽取到 11,025 Hz。
