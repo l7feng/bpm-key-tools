@@ -31,7 +31,27 @@
 | `synth.py` | 合成评测集：点击音轨（已知 BPM）、I-IV-V-I 三和弦进行（已知调性）、四类负例 |
 | `dsp.py` | 经典 DSP 基线：STFT 谱通量 onset 包络 → 自相关 tempo salience → 抛物线插值 → 倍频折叠；平均谱 → chroma → Krumhansl-Schmuckler 模板相关 |
 | `evaluate.py` | 跑评测、算指标、写 `results/` 三份产物 |
-| `results/` | `results.json` / `summary.json` / `report.md` |
+| `real-manifest.json` | 真实素材清单：`bpm` 数值＝有真值，`null`＝应判 undetermined 的负例，缺省＝未标注只记观测值 |
+| `results/` | `results.json` / `summary.json` / `report.md`（合成集）、`report-real.md`（真实素材） |
+
+## 真实素材评测（Rust 内核）
+
+产品内核（`src-tauri/src/analysis.rs`）的指标由仓库内的 ignored 测试直接算出，不经过 Python：
+
+```powershell
+$env:PATH = "D:/Ai-Files/Tools/BuildEnv/sfx-tools-rust/cargo/bin;" + $env:PATH
+$env:RUSTUP_HOME = "D:/Ai-Files/Tools/BuildEnv/sfx-tools-rust/rustup"
+$env:CARGO_HOME = "D:/Ai-Files/Tools/BuildEnv/sfx-tools-rust/cargo"
+
+cd D:/Ai-Files/Repos/bpm-key-tools/src-tauri
+cargo test --offline eval_real_manifest -- --ignored --nocapture
+```
+
+- 默认读 `../eval/real-manifest.json`；可用 `BPM_EVAL_MANIFEST` 指到别的清单。
+- 样本根目录取清单里的 `base`，可用 `BPM_REAL_BASE` 覆盖（换机器、换曲库时只改环境变量）。
+- 指标：BPM 严格（≤1 BPM）/ 容差（≤max(2 BPM, 2%)）/ 误弃 / 倍频错误 / 负例通过（按类型分组）/ 调性 top-1 / 单条耗时中位与最大。
+- 报告固定写到 `results/report-real.md`，逐条附 BPM 与调性置信。40 条标注集到手后，只需往清单里补 `bpm` 与 `key` 字段，指标随即变成真实标注口径。
+
 
 ## 运行
 

@@ -855,4 +855,232 @@ mod tests {
         println!("样本：OK {ok} / ERR {err}");
         assert_eq!(err, 0, "全部样本都应能分析");
     }
+
+    /// 真实素材评测 harness（手动跑）：读 `eval/real-manifest.json`，按有无真值分别统计
+    /// BPM 严格／容差／倍频错误／误弃、负例误报、调性 top-1、耗时，并写出 Markdown 报告。
+    ///
+    /// 清单路径：环境变量 `BPM_EVAL_MANIFEST`，默认 `../eval/real-manifest.json`（相对 src-tauri）。
+    /// 样本根目录：清单里的 `base`，可被环境变量 `BPM_REAL_BASE` 覆盖。
+    #[test]
+    #[ignore]
+    fn eval_real_manifest() {
+        let manifest_path = std::env::var("BPM_EVAL_MANIFEST").unwrap_or_else(|_| {
+            let base = Path::new(env!("CARGO_MANIFEST_DIR"));
+            base.join("../eval/real-manifest.json")
+                .to_string_lossy()
+                .into_owned()
+        });
+        let raw = match std::fs::read_to_string(&manifest_path) {
+            Ok(v) => v,
+            Err(e) => {
+                println!("读不到清单 {manifest_path}：{e}，跳过");
+                return;
+            }
+        };
+        let doc: serde_json::Value = serde_json::from_str(&raw).unwrap();
+        let base = std::env::var("BPM_REAL_BASE")
+            .ok()
+            .or_else(|| doc.get("base").and_then(|v| v.as_str()).map(|s| s.to_string()))
+            .unwrap_or_default();
+        let items = doc.get("items").and_then(|v| v.as_array()).cloned().unwrap_or_default();
+
+        struct Row {
+            id: String,
+            kind: String,
+            bpm_truth: Option<f64>,
+            key_truth: Option<String>,
+            bpm: Option<f64>,
+            key: Option<String>,
+            key_conf: f32,
+            conf: f32,
+            ms: u128,
+            labeled: bool,
+        }
+
+        let mut rows: Vec<Row> = Vec::new();
+        let mut errors: Vec<String> = Vec::new();
+        for it in &items {
+            let id = it.get("id").and_then(|v| v.as_str()).unwrap_or("?").to_string();
+            let kind = it.get("kind").and_then(|v| v.as_str()).unwrap_or("?").to_string();
+            let file = it.get("file").and_then(|v| v.as_str()).unwrap_or("");
+            let path = if Path::new(file).is_absolute() {
+                PathBuf::from(file)
+            } else {
+                Path::new(&base).join(file)
+            };
+            let bpm_truth = it.get("bpm").and_then(|v| v.as_f64());
+            // 有 bpm 字段（哪怕是 null）就算「已标注」；负例即 bpm 为 null 的那批。
+            let labeled = it.get("bpm").is_some();
+            let key_truth = it.get("key").and_then(|v| v.as_str()).map(|s| s.to_string());
+            match analyze_file(&path, "dsp") {
+                Ok(r) => rows.push(Row {
+                    id,
+                    kind,
+                    bpm_truth,
+                    key_truth,
+                    bpm: r.bpm,
+                    key: r.key,
+                    key_conf: r.key_confidence,
+                    conf: r.bpm_confidence,
+                    ms: r.elapsed_ms,
+                    labeled,
+                }),
+                Err(e) => errors.push(format!("{id} {}：{e}", path.display())),
+            }
+        }
+
+        let tol = |truth: f64| (2.0f64).max(truth * 0.02);
+        let mut pos_total = 0usize;
+        let mut strict_hit = 0usize;
+        let mut tol_hit = 0usize;
+        let mut octave_bad = 0usize;
+        let mut rejected = 0usize;
+        let mut neg_total = 0usize;
+        let mut neg_pass = 0usize;
+        let mut key_total = 0usize;
+        let mut key_hit = 0usize;
+        let mut unlabeled: Vec<&Row> = Vec::new();
+        let mut negatives_failed: Vec<&Row> = Vec::new();
+        let mut bpm_misses: Vec<(f64, f64)> = Vec::new();
+
+        for row in &rows {
+            if !row.labeled {
+                unlabeled.push(row);
+                continue;
+            }
+            match row.bpm_truth {
+                Some(truth) => {
+                    pos_total += 1;
+                    match row.bpm {
+                        Some(v) => {
+                            let d = (v - truth).abs();
+                            if d <= 1.0 {
+                                strict_hit += 1;
+                                tol_hit += 1;
+                            } else if d <= tol(truth) {
+                                tol_hit += 1;
+                            }
+                            let ratio = if truth.abs() > 1e-6 { v / truth } else { 1.0 };
+                            if (ratio - 2.0).abs() <= 0.05 || (ratio - 0.5).abs() <= 0.02 {
+                                octave_bad += 1;
+                            }
+                            if d > tol(truth) {
+                                bpm_misses.push((truth, v));
+                            }
+                        }
+                        None => {
+                            rejected += 1;
+                            bpm_misses.push((truth, f64::NAN));
+                        }
+                    }
+                }
+                None => {
+                    neg_total += 1;
+                    if row.bpm.is_none() {
+                        neg_pass += 1;
+                    } else {
+                        negatives_failed.push(row);
+                    }
+                }
+            }
+            if let Some(ref kt) = row.key_truth {
+                key_total += 1;
+                if let Some(ref got) = row.key {
+                    if got.eq_ignore_ascii_case(kt) {
+                        key_hit += 1;
+                    }
+                }
+            }
+        }
+
+        let pct = |n: usize, d: usize| if d == 0 { "—".to_string() } else { format!("{:.1}%", n as f64 * 100.0 / d as f64) };
+        let mut ms_all: Vec<u128> = rows.iter().map(|r| r.ms).collect();
+        ms_all.sort();
+        let median = ms_all.get(ms_all.len() / 2).copied().unwrap_or(0);
+
+        println!("样本 {} 条（错误 {}）：有真值 BPM {pos_total}，负例 {neg_total}，未标注 {}", rows.len(), errors.len(), unlabeled.len());
+        println!(
+            "BPM 严格 {}（{}/{}）容差 {}（{}/{}）倍频错误 {} 误弃 {} 负例通过 {}（{}/{}）调性 top-1 {}（{}/{}）耗时 median {} ms / max {:?}",
+            pct(strict_hit, pos_total), strict_hit, pos_total,
+            pct(tol_hit, pos_total), tol_hit, pos_total,
+            octave_bad, rejected,
+            pct(neg_pass, neg_total), neg_pass, neg_total,
+            pct(key_hit, key_total), key_hit, key_total,
+            median, ms_all.last()
+        );
+        if !bpm_misses.is_empty() {
+            println!("BPM 未命中：{:?}", bpm_misses);
+        }
+        if !negatives_failed.is_empty() {
+            for r in &negatives_failed {
+                println!("负例误报 {} {:?} 置信 {:.2}", r.id, r.bpm, r.conf);
+            }
+        }
+
+        let mut md = String::new();
+        md.push_str("# 真实素材评测报告（Rust DSP 内核）\n\n");
+        md.push_str("由 `cargo test --offline eval_real_manifest -- --ignored --nocapture` 生成，指标不手工填写。\n");
+        md.push_str("清单 `eval/real-manifest.json`：`bpm` 为数值＝有真值；`bpm: null`＝应判 undetermined 的负例；不带 `bpm`＝尚无标注，只列观测值。\n\n");
+        md.push_str(&format!(
+            "## 指标\n\n| 指标 | 结果 | 口径 |\n| --- | --- | --- |\n| BPM 严格 | {} | 绝对误差 ≤ 1 BPM（n={}） |\n| BPM 容差 | {} | 误差 ≤ max(2 BPM, 2%) |\n| BPM 误弃 | {} | 有真值却判 undetermined |\n| 倍频错误 | {} | 输出约为真值 2 倍或 0.5 倍 |\n| 负例通过 | {} | 应判 undetermined 且确实没给数（n={}） |\n| 调性 top-1 | {} | 主选命中（n={}） |\n| 单条耗时 | 中位 {} ms / 最大 {} ms | 11,025 Hz 抽取后计算 |\n\n",
+            pct(strict_hit, pos_total), pos_total,
+            pct(tol_hit, pos_total),
+            rejected,
+            octave_bad,
+            pct(neg_pass, neg_total), neg_total,
+            pct(key_hit, key_total), key_total,
+            median, ms_all.last().map(|v| v.to_string()).unwrap_or_else(|| "—".to_string())
+        ));
+        if errors.is_empty() {
+            md.push_str("读文件错误：0。\n\n");
+        } else {
+            md.push_str(&format!("读文件错误 {}：\n\n", errors.len()));
+            for e in &errors {
+                md.push_str(&format!("- {e}\n"));
+            }
+            md.push('\n');
+        }
+        md.push_str("## 逐条\n\n| id | 类型 | 真值 BPM | 实测 BPM | BPM 置信 | 调性 | 调性置信 | 耗时 |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n");
+        for r in &rows {
+            md.push_str(&format!(
+                "| {} | {} | {} | {} | {:.2} | {} | {:.2} | {} ms |\n",
+                r.id,
+                r.kind,
+                r.bpm_truth.map(|v| format!("{v:.1}")).unwrap_or_else(|| if r.labeled { "undetermined".to_string() } else { "—".to_string() }),
+                r.bpm.map(|v| format!("{v:.1}")).unwrap_or_else(|| "undetermined".to_string()),
+                r.conf,
+                r.key.clone().unwrap_or_else(|| "—".to_string()),
+                r.key_conf,
+                r.ms
+            ));
+        }
+
+        // 按类型归拢：负例里各类型有多少条被误给了 BPM，比单看总数更能说明阈值问题。
+        let mut by_kind: Vec<(String, usize, usize)> = Vec::new();
+        for r in &rows {
+            if r.labeled && r.bpm_truth.is_none() {
+                match by_kind.iter_mut().find(|(k, _, _)| *k == r.kind) {
+                    Some((_, total, passed)) => {
+                        *total += 1;
+                        if r.bpm.is_none() {
+                            *passed += 1;
+                        }
+                    }
+                    None => by_kind.push((r.kind.clone(), 1, usize::from(r.bpm.is_none()))),
+                }
+            }
+        }
+        md.push_str("\n## 负例按类型\n\n| 类型 | 条数 | 判 undetermined |\n| --- | --- | --- |\n");
+        for (k, total, passed) in &by_kind {
+            md.push_str(&format!("| {k} | {total} | {passed} |\n"));
+        }
+
+        let out = Path::new(env!("CARGO_MANIFEST_DIR")).join("../eval/results/report-real.md");
+        if let Some(parent) = out.parent() {
+            let _ = std::fs::create_dir_all(parent);
+        }
+        std::fs::write(&out, md).unwrap();
+        println!("报告：{}", out.display());
+        assert!(errors.is_empty(), "全部样本都应能分析");
+    }
 }

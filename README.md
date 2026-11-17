@@ -94,9 +94,12 @@ cargo test --offline
 $env:BPM_WAVE_SAMPLE_DIR = "<音频样本目录>"
 cargo test --offline analyze_real_files -- --ignored --nocapture
 cargo test --offline waveform_real_files -- --ignored --nocapture
+
+# 真实素材评测（读 eval/real-manifest.json，写 eval/results/report-real.md）
+cargo test --offline eval_real_manifest -- --ignored --nocapture
 ```
 
-当前基线：`9 passed / 0 failed / 2 ignored`（ignored 为两个真实样本用例）。
+当前基线：`9 passed / 0 failed / 3 ignored`（ignored 为两个真实样本冒烟用例 + 评测 harness）。
 
 ## 安装与运行
 

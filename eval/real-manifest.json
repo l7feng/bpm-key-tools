@@ -1,0 +1,36 @@
+{
+  "_说明": "真实素材评测清单。bpm 为数值表示有真值；bpm 为 null 表示应判 undetermined（负例）；不带 bpm 字段表示尚无标注，只统计观测值、不计入准确率。key 可选，带值才计调性命中。base 可用环境变量 BPM_REAL_BASE 覆盖。",
+  "base": "D:/My-Temporary/_scratch",
+  "items": [
+    { "id": "click-120", "file": "bpm-one/click_120bpm.wav", "kind": "click", "bpm": 120.0 },
+    { "id": "chord-c-major", "file": "bpm-one/chord_c_major.wav", "kind": "steady", "bpm": null, "key": "C major" },
+
+    { "id": "tone-96k-wav", "file": "bpm-ui-demo/tone96k.wav", "kind": "tone", "bpm": null },
+    { "id": "tone-96k-aiff", "file": "bpm-ui-demo/tone96k.aiff", "kind": "tone", "bpm": null },
+    { "id": "tone-96k-flac", "file": "bpm-ui-demo/tone96k.flac", "kind": "tone", "bpm": null },
+    { "id": "tone-44k-mp3", "file": "bpm-ui-demo/tone44k.mp3", "kind": "tone", "bpm": null },
+    { "id": "tone-44k-m4a", "file": "bpm-ui-demo/tone44k.m4a", "kind": "tone", "bpm": null },
+
+    { "id": "pad-01", "file": "bpm-real-12/A-嫉妒.wav", "kind": "score", "bpm": null },
+    { "id": "pad-02", "file": "bpm-real-12/A-调查 EP.wav", "kind": "score", "bpm": null },
+    { "id": "pad-03", "file": "bpm-real-12/A-调查逐渐接近真相.wav", "kind": "score", "bpm": null },
+    { "id": "pad-04", "file": "bpm-real-12/A-跑 快节奏.wav", "kind": "score", "bpm": null },
+    { "id": "pad-05", "file": "bpm-real-12/A-追踪 跑.wav", "kind": "score", "bpm": null },
+    { "id": "pad-06", "file": "bpm-real-12/B-最为悲伤的情绪.wav", "kind": "score", "bpm": null },
+    { "id": "pad-07", "file": "bpm-real-12/B-猎巫组织.wav", "kind": "score", "bpm": null },
+    { "id": "pad-08", "file": "bpm-real-12/B-被最信任的人背叛.wav", "kind": "score", "bpm": null },
+    { "id": "pad-09", "file": "bpm-real-12/B-阴影.wav", "kind": "score", "bpm": null },
+    { "id": "pad-10", "file": "bpm-real-12/C-亲情决裂.wav", "kind": "score", "bpm": null },
+    { "id": "pad-11", "file": "bpm-real-12/C-解谜.wav", "kind": "score", "bpm": null },
+    { "id": "pad-12", "file": "bpm-real-12/几乎察觉不到的不安气息.wav", "kind": "score", "bpm": null },
+
+    { "id": "loop-ambient-bongos", "file": "bpm-real-beat/Ambient Bongos.wav", "kind": "loop" },
+    { "id": "loop-backbeat", "file": "bpm-real-beat/Backbeat.wav", "kind": "loop" },
+    { "id": "loop-beat-one", "file": "bpm-real-beat/Beat One.wav", "kind": "loop" },
+    { "id": "loop-bit-bit", "file": "bpm-real-beat/Bit Bit Loop.wav", "kind": "loop" },
+    { "id": "loop-bollywood", "file": "bpm-real-beat/Bollywood Groove.wav", "kind": "loop" },
+    { "id": "loop-comic-game", "file": "bpm-real-beat/Comic Game Loop - Mischief.wav", "kind": "loop" },
+    { "id": "loop-forest-frolic", "file": "bpm-real-beat/Forest Frolic Loop.wav", "kind": "loop" },
+    { "id": "loop-meditating", "file": "bpm-real-beat/Meditating Beat.wav", "kind": "loop" }
+  ]
+}
