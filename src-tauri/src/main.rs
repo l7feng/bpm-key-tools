@@ -22,6 +22,11 @@ use symphonia::core::probe::Hint;
 /// 模型引擎预留接口，未接入前会返回可读错误。
 #[tauri::command]
 fn app_info() -> serde_json::Value {
+    // 支持「带文件夹启动」：命令行第一个参数若为已存在的目录，界面启动后自动加载它。
+    let initial_folder = std::env::args()
+        .skip(1)
+        .find(|a| Path::new(a).is_dir())
+        .map(|a| a.to_string());
     serde_json::json!({
         "name": "BPM Key Tools",
         "version": env!("CARGO_PKG_VERSION"),
@@ -31,8 +36,9 @@ fn app_info() -> serde_json::Value {
             { "id": "model", "label": "神经网络模型", "ready": false, "note": "需先确认权重许可与打包体积，未接入" }
         ],
         "mock": false,
-        "stage": "S3-real-audit",
-        "capabilities": ["scan", "drag_drop", "playback", "waveform", "metadata_write", "analyze"]
+        "stage": "S4-dsp",
+        "capabilities": ["scan", "drag_drop", "playback", "waveform", "metadata_write", "analyze"],
+        "initialFolder": initial_folder
     })
 }
 

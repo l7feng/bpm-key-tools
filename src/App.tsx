@@ -272,14 +272,18 @@ export default function App() {
   }, [selectedPath, demo]);
 
   // 引擎清单从 Rust 读；模型引擎未接入时界面上标灰，不允许选。
+  // 带文件夹启动时（命令行第一个参数是目录），启动后自动扫描该文件夹。
   useEffect(() => {
     if (!isTauri()) return;
-    void invoke<{ engines?: EngineInfo[] }>("app_info")
+    void invoke<{ engines?: EngineInfo[]; initialFolder?: string | null }>("app_info")
       .then((info) => {
         if (Array.isArray(info?.engines) && info.engines.length) {
           setEngines(info.engines);
           const ready = info.engines.find((e) => e.ready);
           if (ready) setEngine(ready.id);
+        }
+        if (info?.initialFolder) {
+          void scanRef.current(info.initialFolder);
         }
       })
       .catch(() => {});

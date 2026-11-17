@@ -269,6 +269,54 @@ fn detect_bpm(env: &[f32]) -> (Option<f64>, f32, Vec<String>) {
     }
     let min_lag = ((ENV_HZ * 60.0) / BPM_MAX).round().max(2.0) as usize;
     let max_lag = ((ENV_HZ * 60.0) / BPM_MIN).round() as usize;
+
+    // 稳态素材守卫：先对包络做 ~75 ms 低通（拍点节奏只有 2–8 Hz），再量中段 80% 的偏度。
+    // 真拍点是「尖锐、单边」的起音，平滑后仍明显右偏（实测真实律动 1.2–2.5）；
+    // 而持续和弦的拍频、铺底长音的起伏接近正弦，偏度在 0 附近（4 s 大三和弦曾被报
+    // 156.5 BPM / 0.82，偏度只有 0.29）。偏度过低就判为稳态素材，不给数字。
+    let radius = 4usize;
+    let n = env.len();
+    let mut smooth = env.to_vec();
+    for i in 0..n {
+        let a = i.saturating_sub(radius);
+        let b = (i + radius).min(n - 1);
+        let sum: f32 = env[a..=b].iter().sum();
+        smooth[i] = sum / (b - a + 1) as f32;
+    }
+    let lo = n / 10;
+    let hi = n - lo;
+    let mid = &smooth[lo..hi];
+    let mu = mid.iter().map(|v| *v as f64).sum::<f64>() / mid.len() as f64;
+    let sd = (mid
+        .iter()
+        .map(|v| {
+            let d = *v as f64 - mu;
+            d * d
+        })
+        .sum::<f64>()
+        / mid.len() as f64)
+        .sqrt();
+    let skew = if sd > 1e-6 {
+        mid.iter()
+            .map(|v| {
+                let d = *v as f64 - mu;
+                d * d * d
+            })
+            .sum::<f64>()
+            / mid.len() as f64
+            / (sd * sd * sd)
+    } else {
+        0.0
+    };
+    notes.push(format!("包络偏度 {:.2}", skew));
+    if skew < 0.80 {
+        notes.push(format!(
+            "包络缺少起音尖峰（偏度 {:.2} < 0.80），判定为持续 / 拍频素材，BPM 记 undetermined",
+            skew
+        ));
+        return (None, 0.0, notes);
+    }
+
     let r = autocorrelation(env, min_lag, max_lag);
 
     // 在候选 lag 上打分并记录，供八度决策使用。
@@ -318,6 +366,26 @@ fn detect_bpm(env: &[f32]) -> (Option<f64>, f32, Vec<String>) {
             peak
         ));
         return (None, peak.max(0.0).clamp(0.0, 1.0) as f32, notes);
+    }
+
+    // 显著度：峰值要明显高于整个搜索区间的中位数。
+    // 持续和弦 / 拍频调制这类素材的自相关在所有 lag 上都偏高，峰值虽不小但没有「独占性」，
+    // 只按绝对值放行会得到看似可信的假 BPM，所以这里再要求 peak/median 足够大。
+    let mut mid: Vec<f64> = (min_lag..=max_lag)
+        .filter(|lag| (*lag as isize - chosen as isize).abs() > 3)
+        .map(|lag| r[lag])
+        .collect();
+    if !mid.is_empty() {
+        mid.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
+        let median = mid[mid.len() / 2].max(0.02);
+        let ratio = peak / median;
+        if ratio < 2.0 {
+            notes.push(format!(
+                "周期性不突出（峰值 {:.2} 仅为区间中位数 {:.2} 的 {:.1} 倍），按 undetermined 处理",
+                peak, median, ratio
+            ));
+            return (None, peak.max(0.0).clamp(0.0, 1.0) as f32, notes);
+        }
     }
 
     // 抛物线插值，把 lag 从整数帧细化到亚帧，才可能达到 ±1 BPM。
@@ -693,6 +761,20 @@ mod tests {
         let r = analyze_file(&path, "dsp").unwrap();
         let key = r.key.expect("应给出调性");
         assert!(key.starts_with('C') && key.ends_with("major"), "C 大三和弦实测 {key}");
+        let _ = std::fs::remove_file(path);
+    }
+
+    #[test]
+    fn sustained_chord_has_no_bpm() {
+        // 4 s 稳态大三和弦曾被报 156.5 BPM（置信 0.82）：三音拍频在包络里凑出假周期。
+        // 回归要求：持续和弦不给出 BPM，调性仍要判对。
+        let path = scratch("chord-steady.wav");
+        let rate = 44_100;
+        write_wav(&path, &triad(261.63, 329.63, 391.99, rate, 4.0), rate);
+        let r = analyze_file(&path, "dsp").unwrap();
+        assert!(r.bpm.is_none(), "稳态和弦不应给 BPM，实测 {:?}", r.bpm);
+        let key = r.key.expect("调性仍应给出");
+        assert!(key.starts_with('C'), "C 大三和弦实测 {key}");
         let _ = std::fs::remove_file(path);
     }
 
