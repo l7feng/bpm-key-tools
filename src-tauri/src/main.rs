@@ -1,5 +1,7 @@
 #![windows_subsystem = "windows"]
 
+mod analysis;
+
 use lofty::config::{ParseOptions, WriteOptions};
 use lofty::file::BoundTaggedFile;
 use lofty::prelude::*;
@@ -16,17 +18,21 @@ use symphonia::core::io::MediaSourceStream;
 use symphonia::core::meta::MetadataOptions;
 use symphonia::core::probe::Hint;
 
-/// 供前端查询应用与算法状态。BPM/调性识别算法仍未接入（值来自既有标签或人工判定），
-/// 但扫描、试听、元数据写入已接真实文件。
+/// 供前端查询应用与算法状态。BPM/调性识别已接入本地 DSP 引擎（默认）；
+/// 模型引擎预留接口，未接入前会返回可读错误。
 #[tauri::command]
 fn app_info() -> serde_json::Value {
     serde_json::json!({
         "name": "BPM Key Tools",
         "version": env!("CARGO_PKG_VERSION"),
-        "algorithm": "not_connected",
+        "algorithm": "dsp",
+        "engines": [
+            { "id": "dsp", "label": "本地 DSP", "ready": true, "note": "经典信号处理：拍点自相关 + 调性音阶匹配" },
+            { "id": "model", "label": "神经网络模型", "ready": false, "note": "需先确认权重许可与打包体积，未接入" }
+        ],
         "mock": false,
         "stage": "S3-real-audit",
-        "capabilities": ["scan", "drag_drop", "playback", "waveform", "metadata_write"]
+        "capabilities": ["scan", "drag_drop", "playback", "waveform", "metadata_write", "analyze"]
     })
 }
 
@@ -430,6 +436,14 @@ async fn waveform_peaks(path: String, buckets: usize) -> Result<WaveformPeaks, S
         .map_err(|e| e.to_string())?
 }
 
+/// 分析单个文件：默认引擎为本地 DSP。只读，不写任何标签。
+#[tauri::command]
+async fn analyze_file(path: String, engine: String) -> Result<analysis::AnalysisResult, String> {
+    tauri::async_runtime::spawn_blocking(move || analysis::analyze_file(Path::new(&path), &engine))
+        .await
+        .map_err(|e| e.to_string())?
+}
+
 /// 拖放解析：拖入文件夹就用它；拖入音频文件就用它所在的文件夹。
 #[tauri::command]
 fn resolve_drop_folder(paths: Vec<String>) -> Option<String> {
@@ -457,6 +471,7 @@ fn main() {
             scan_folder,
             write_metadata,
             waveform_peaks,
+            analyze_file,
             resolve_drop_folder
         ])
         .run(tauri::generate_context!())

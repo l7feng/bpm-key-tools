@@ -30,6 +30,33 @@ type ScanPayload = { root: string; tracks: Record<string, unknown>[]; errors: st
 type WaveResult = { buckets: number[]; durationSec: number; sampleRate: number; channels: number; codec: string };
 type WaveState = { status: "idle" | "loading" | "ready" | "error"; peaks: number[]; message?: string };
 
+/** Rust analyze_file 的返回（camelCase）。 */
+type AnalysisPayload = {
+  path: string;
+  engine: string;
+  bpm: number | null;
+  bpmConfidence: number;
+  key: string | null;
+  keyTop2: string | null;
+  keyConfidence: number;
+  durationSec: number;
+  sampleRate: number;
+  elapsedMs: number;
+  notes: string[];
+};
+
+type EngineInfo = { id: string; label: string; ready: boolean; note: string };
+
+const FALLBACK_ENGINES: EngineInfo[] = [
+  { id: "dsp", label: "本地 DSP", ready: true, note: "经典信号处理：拍点自相关 + 调性音阶匹配" },
+  { id: "model", label: "神经网络模型", ready: false, note: "需先确认权重许可与打包体积，未接入" },
+];
+
+function pct(v: number): string {
+  if (!Number.isFinite(v)) return "—";
+  return Math.round(Math.max(0, Math.min(1, v)) * 100) + "%";
+}
+
 function fmtBytes(n: number): string {
   if (!Number.isFinite(n) || n <= 0) return "—";
   return (n / 1024 / 1024).toFixed(1) + " MB";
@@ -83,6 +110,10 @@ export default function App() {
   const [log, setLog] = useState<string[]>([]);
   const [wave, setWave] = useState<WaveState>({ status: "idle", peaks: [] });
   const [dropActive, setDropActive] = useState(false);
+  const [engines, setEngines] = useState<EngineInfo[]>(FALLBACK_ENGINES);
+  const [engine, setEngine] = useState<string>("dsp");
+  const [analyses, setAnalyses] = useState<Record<string, AnalysisPayload>>({});
+  const [analyzeBusy, setAnalyzeBusy] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const writeBusy = useRef(false);
   const waveCache = useRef(new Map<string, number[]>());
@@ -240,6 +271,65 @@ export default function App() {
     };
   }, [selectedPath, demo]);
 
+  // 引擎清单从 Rust 读；模型引擎未接入时界面上标灰，不允许选。
+  useEffect(() => {
+    if (!isTauri()) return;
+    void invoke<{ engines?: EngineInfo[] }>("app_info")
+      .then((info) => {
+        if (Array.isArray(info?.engines) && info.engines.length) {
+          setEngines(info.engines);
+          const ready = info.engines.find((e) => e.ready);
+          if (ready) setEngine(ready.id);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const analysisKey = (path: string, eng: string) => `${path}#${eng}`;
+
+  /** 对单个文件跑一次分析。只产出候选，不写任何标签。 */
+  const runAnalysis = useCallback(
+    async (track: Track) => {
+      if (demo || !track.path) {
+        addLog(`[${stamp()}] 演示数据没有真实音频，无法分析`);
+        return;
+      }
+      const path = track.path;
+      setAnalyzeBusy(path);
+      try {
+        const result = await invoke<AnalysisPayload>("analyze_file", {
+          path,
+          engine,
+        });
+        setAnalyses((prev) => ({ ...prev, [analysisKey(path, result.engine)]: result }));
+        const bpmText = result.bpm !== null ? `${result.bpm.toFixed(1)} BPM` : "BPM 未定";
+        const keyText = result.key ?? "调性未定";
+        addLog(
+          `[${stamp()}] ${track.fileName} → ${result.engine.toUpperCase()} 分析：${bpmText} / ${keyText}（${result.elapsedMs} ms）`
+        );
+      } catch (err) {
+        addLog(`[${stamp()}] ${track.fileName} → 分析失败：${String(err)}`);
+      } finally {
+        setAnalyzeBusy(null);
+      }
+    },
+    [addLog, demo, engine]
+  );
+
+  const analyzeAll = async () => {
+    if (demo) {
+      addLog(`[${stamp()}] 演示态：没有真实文件可分析`);
+      return;
+    }
+    const targets = tracks.filter((t) => t.path);
+    if (targets.length === 0) return;
+    addLog(`[${stamp()}] 开始批量分析 ${targets.length} 个文件（${engine.toUpperCase()}）`);
+    for (const t of targets) {
+      await runAnalysis(t);
+    }
+    addLog(`[${stamp()}] 批量分析结束`);
+  };
+
   const togglePlay = (track: Track) => {
     if (demo || !track.path) {
       addLog(`[${stamp()}] 演示数据无真实音频可试听`);
@@ -354,6 +444,8 @@ export default function App() {
 
   const waveDuration = clipDuration || selected?.durationSec || 0;
   const waveProgress = playingId === selected?.id && waveDuration > 0 ? Math.min(1, position / waveDuration) : 0;
+  const engineLabel = engines.find((e) => e.id === engine)?.label ?? "本地 DSP";
+  const selectedAnalysis = selected?.path ? analyses[analysisKey(selected.path, engine)] : undefined;
 
   return (
     <div className={"app" + (dropActive ? " app-drop" : "")}>
@@ -367,7 +459,7 @@ export default function App() {
         <span className="badge badge-warn">
           {demo
             ? "演示态 · 无法访问真实文件"
-            : "算法未接入 · BPM/调性值来自既有标签或人工判定"}
+            : `本机 ${engineLabel} 分析 · 候选需复核后写回`}
         </span>
       </header>
 
@@ -382,6 +474,14 @@ export default function App() {
           <div className="list-toolbar">
             <button className="btn btn-primary" onClick={() => void loadFolder()} disabled={scanning}>
               {scanning ? "扫描中…" : tracks.length && root ? "重新选择文件夹" : "选择文件夹"}
+            </button>
+            <button
+              className="btn btn-sm"
+              onClick={() => void analyzeAll()}
+              disabled={demo || Boolean(analyzeBusy) || tracks.length === 0}
+              title={demo ? "演示数据无真实音频" : `对列表内 ${tracks.length} 个文件依次分析`}
+            >
+              {analyzeBusy ? "分析中…" : "分析全部"}
             </button>
             <span className="muted">{tracks.length} 个音频</span>
           </div>
@@ -472,9 +572,90 @@ export default function App() {
                 </div>
               </section>
 
+              <section className="analysis">
+                <div className="analysis-head">
+                  <span className="analysis-title">算法候选</span>
+                  <select
+                    className="select"
+                    value={engine}
+                    onChange={(e) => setEngine(e.target.value)}
+                    aria-label="分析引擎"
+                  >
+                    {engines.map((en) => (
+                      <option key={en.id} value={en.id} disabled={!en.ready}>
+                        {en.label}
+                        {en.ready ? "" : "（未接入）"}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={() => void runAnalysis(selected)}
+                    disabled={!realFile || analyzeBusy === selected.path}
+                  >
+                    {analyzeBusy === selected.path ? "分析中…" : "运行分析"}
+                  </button>
+                </div>
+
+                {selectedAnalysis ? (
+                  <>
+                    <div className="analysis-grid">
+                      <div className="a-item">
+                        <span className="a-label">BPM</span>
+                        <b className="a-value">
+                          {selectedAnalysis.bpm !== null ? selectedAnalysis.bpm.toFixed(1) : "未定"}
+                        </b>
+                        <span className="a-sub">置信 {pct(selectedAnalysis.bpmConfidence)}</span>
+                        {selectedAnalysis.bpm !== null && (
+                          <button
+                            className="link"
+                            onClick={() => setBpmInput(selectedAnalysis.bpm!.toFixed(1))}
+                          >
+                            采用
+                          </button>
+                        )}
+                      </div>
+                      <div className="a-item">
+                        <span className="a-label">调性</span>
+                        <b className="a-value">{selectedAnalysis.key ?? "未定"}</b>
+                        <span className="a-sub">置信 {pct(selectedAnalysis.keyConfidence)}</span>
+                        {selectedAnalysis.keyTop2 && (
+                          <span className="a-sub">次优 {selectedAnalysis.keyTop2}</span>
+                        )}
+                        {selectedAnalysis.key && (
+                          <button className="link" onClick={() => setKeyInput(selectedAnalysis.key!)}>
+                            采用
+                          </button>
+                        )}
+                      </div>
+                      <div className="a-item">
+                        <span className="a-label">耗时</span>
+                        <b className="a-value">{selectedAnalysis.elapsedMs} ms</b>
+                        <span className="a-sub">
+                          {selectedAnalysis.durationSec.toFixed(1)} s · {selectedAnalysis.sampleRate} Hz
+                        </span>
+                      </div>
+                    </div>
+                    {selectedAnalysis.notes.length > 0 && (
+                      <ul className="note-list">
+                        {selectedAnalysis.notes.slice(0, 3).map((n, i) => (
+                          <li key={i}>{n}</li>
+                        ))}
+                      </ul>
+                    )}
+                  </>
+                ) : (
+                  <div className="analysis-hint">
+                    {demo
+                      ? "演示数据不含真实音频，分析不可用。"
+                      : "分析只产出候选值：点「采用」填进下方输入框，仍需你确认后才写回原文件。"}
+                  </div>
+                )}
+              </section>
+
               <section className="cards">
                 <div className="card">
-                  <div className="card-label">BPM（既有标签或人工判定）</div>
+                  <div className="card-label">BPM（复核后写回）</div>
                   <input
                     className="field"
                     placeholder="如 120.0；留空则不写"
@@ -482,12 +663,15 @@ export default function App() {
                     onChange={(e) => setBpmInput(e.target.value)}
                   />
                   <div className="card-sub">
-                    既有标签：{selected.bpmExisting ?? "无"}；算法候选未接入。
+                    既有标签：{selected.bpmExisting ?? "无"}
+                    {selectedAnalysis?.bpm != null
+                      ? `；候选 ${selectedAnalysis.bpm.toFixed(1)}（置信 ${pct(selectedAnalysis.bpmConfidence)}）`
+                      : "；尚无候选"}
                   </div>
                 </div>
 
                 <div className="card">
-                  <div className="card-label">调性（既有标签或人工判定）</div>
+                  <div className="card-label">调性（复核后写回）</div>
                   <input
                     className="field"
                     placeholder="如 A minor；留空则不写"
@@ -495,7 +679,10 @@ export default function App() {
                     onChange={(e) => setKeyInput(e.target.value)}
                   />
                   <div className="card-sub">
-                    既有标签：{selected.keyExisting ?? "无"}；算法候选未接入。
+                    既有标签：{selected.keyExisting ?? "无"}
+                    {selectedAnalysis?.key
+                      ? `；候选 ${selectedAnalysis.key}（置信 ${pct(selectedAnalysis.keyConfidence)}）`
+                      : "；尚无候选"}
                   </div>
                 </div>
               </section>
@@ -560,7 +747,7 @@ export default function App() {
       </footer>
 
       <footer className="statusbar">
-        <span className="status-version">BPM 调性识别 | v0.3.0</span>
+        <span className="status-version">BPM 调性识别 | v0.4.0</span>
       </footer>
 
       {dropActive && (
