@@ -1,0 +1,286 @@
+{
+  "base": "E:\\Ai音乐设定集-Work\\03-现代（LS）",
+  "note": "2026-11-19 从用户曲库 03-现代（LS）按类别等距抽样 40 条；库内无 TBPM/TKEY 标签，真值待人工标注",
+  "items": [
+    {
+      "id": "loop-01",
+      "file": "潮流时尚街头\\街头运动时尚潮流1.mp3",
+      "kind": "loop",
+      "group": "潮流时尚街头",
+      "seconds": 3.8
+    },
+    {
+      "id": "loop-02",
+      "file": "潮流时尚街头\\街头运动时尚潮流17.mp3",
+      "kind": "loop",
+      "group": "潮流时尚街头",
+      "seconds": 4.4
+    },
+    {
+      "id": "loop-03",
+      "file": "潮流时尚街头\\街头运动时尚潮流24.mp3",
+      "kind": "loop",
+      "group": "潮流时尚街头",
+      "seconds": 2.6
+    },
+    {
+      "id": "loop-04",
+      "file": "潮流时尚街头\\街头运动时尚潮流31.mp3",
+      "kind": "loop",
+      "group": "潮流时尚街头",
+      "seconds": 3.5
+    },
+    {
+      "id": "loop-05",
+      "file": "潮流时尚街头\\街头运动时尚潮流38.mp3",
+      "kind": "loop",
+      "group": "潮流时尚街头",
+      "seconds": 1.9
+    },
+    {
+      "id": "loop-06",
+      "file": "潮流时尚街头\\街头运动时尚潮流45.mp3",
+      "kind": "loop",
+      "group": "潮流时尚街头",
+      "seconds": 3.1
+    },
+    {
+      "id": "loop-07",
+      "file": "潮流时尚街头\\街头运动时尚潮流9.mp3",
+      "kind": "loop",
+      "group": "潮流时尚街头",
+      "seconds": 2.8
+    },
+    {
+      "id": "loop-08",
+      "file": "热血摇滚配乐\\部落类的热血音乐（人声多）.mp3",
+      "kind": "loop",
+      "group": "热血摇滚配乐",
+      "seconds": 3.0
+    },
+    {
+      "id": "loop-09",
+      "file": "热血摇滚配乐\\活力青春.mp3",
+      "kind": "loop",
+      "group": "热血摇滚配乐",
+      "seconds": 3.0
+    },
+    {
+      "id": "loop-10",
+      "file": "热血摇滚配乐\\青春活力.mp3",
+      "kind": "loop",
+      "group": "热血摇滚配乐",
+      "seconds": 4.5
+    },
+    {
+      "id": "loop-11",
+      "file": "热血摇滚配乐\\热血战斗前(节奏慢).mp3",
+      "kind": "loop",
+      "group": "热血摇滚配乐",
+      "seconds": 3.5
+    },
+    {
+      "id": "loop-12",
+      "file": "热血摇滚配乐\\运动类长跑（有人声）.mp3",
+      "kind": "loop",
+      "group": "热血摇滚配乐",
+      "seconds": 2.1
+    },
+    {
+      "id": "loop-13",
+      "file": "热血摇滚配乐\\boss登场决战.mp3",
+      "kind": "loop",
+      "group": "热血摇滚配乐",
+      "seconds": 3.3
+    },
+    {
+      "id": "score-14",
+      "file": "悬疑紧张配乐\\案情反转警察犯罪调查侦探神秘.mp3",
+      "kind": "score",
+      "group": "悬疑紧张配乐",
+      "seconds": 1.5
+    },
+    {
+      "id": "score-15",
+      "file": "悬疑紧张配乐\\悲凄神秘沙漠无人区氛围.mp3",
+      "kind": "score",
+      "group": "悬疑紧张配乐",
+      "seconds": 0.7
+    },
+    {
+      "id": "score-16",
+      "file": "悬疑紧张配乐\\调查行动开始.mp3",
+      "kind": "score",
+      "group": "悬疑紧张配乐",
+      "seconds": 2.0
+    },
+    {
+      "id": "score-17",
+      "file": "悬疑紧张配乐\\黑暗恐怖动作预告.mp3",
+      "kind": "score",
+      "group": "悬疑紧张配乐",
+      "seconds": 1.8
+    },
+    {
+      "id": "score-18",
+      "file": "悬疑紧张配乐\\紧迫的行动进行中.mp3",
+      "kind": "score",
+      "group": "悬疑紧张配乐",
+      "seconds": 2.8
+    },
+    {
+      "id": "score-19",
+      "file": "悬疑紧张配乐\\惊悚刺激剧情递进.mp3",
+      "kind": "score",
+      "group": "悬疑紧张配乐",
+      "seconds": 2.2
+    },
+    {
+      "id": "score-20",
+      "file": "悬疑紧张配乐\\开始行动危险逼近紧张.mp3",
+      "kind": "score",
+      "group": "悬疑紧张配乐",
+      "seconds": 1.8
+    },
+    {
+      "id": "score-21",
+      "file": "悬疑紧张配乐\\奇幻剧情.mp3",
+      "kind": "score",
+      "group": "悬疑紧张配乐",
+      "seconds": 2.1
+    },
+    {
+      "id": "score-22",
+      "file": "悬疑紧张配乐\\神秘奇幻剧情.mp3",
+      "kind": "score",
+      "group": "悬疑紧张配乐",
+      "seconds": 2.2
+    },
+    {
+      "id": "score-23",
+      "file": "悬疑紧张配乐\\史诗戏剧性打击节奏.mp3",
+      "kind": "score",
+      "group": "悬疑紧张配乐",
+      "seconds": 1.1
+    },
+    {
+      "id": "score-24",
+      "file": "悬疑紧张配乐\\悬疑犯罪调查杀手谋杀犯罪恐惧.mp3",
+      "kind": "score",
+      "group": "悬疑紧张配乐",
+      "seconds": 1.6
+    },
+    {
+      "id": "score-25",
+      "file": "悬疑紧张配乐\\严肃紧张动力混合紧迫感开场.mp3",
+      "kind": "score",
+      "group": "悬疑紧张配乐",
+      "seconds": 1.9
+    },
+    {
+      "id": "score-26",
+      "file": "悬疑紧张配乐\\追捕计划紧张剧情.mp3",
+      "kind": "score",
+      "group": "悬疑紧张配乐",
+      "seconds": 1.0
+    },
+    {
+      "id": "orchestral-27",
+      "file": "悬疑紧张配乐\\暗黑混乱感氛围弦乐大提琴.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 5.9
+    },
+    {
+      "id": "orchestral-28",
+      "file": "悬疑紧张配乐\\充满悬念的史诗弦乐大片.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 1.6
+    },
+    {
+      "id": "orchestral-29",
+      "file": "悬疑紧张配乐\\电影感紧张反转弦乐.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 5.1
+    },
+    {
+      "id": "orchestral-30",
+      "file": "悬疑紧张配乐\\紧张刺激神秘戏剧性阴暗的交响乐.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 2.2
+    },
+    {
+      "id": "orchestral-31",
+      "file": "悬疑紧张配乐\\剧情极速发展弦乐.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 3.4
+    },
+    {
+      "id": "orchestral-32",
+      "file": "悬疑紧张配乐\\破案神秘戏剧性阴暗的交响乐.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 2.7
+    },
+    {
+      "id": "orchestral-33",
+      "file": "悬疑紧张配乐\\伤感阴森悲凉的钢琴.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 2.6
+    },
+    {
+      "id": "orchestral-34",
+      "file": "悬疑紧张配乐\\神秘奇幻的故事戏剧性钢琴曲.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 2.8
+    },
+    {
+      "id": "orchestral-35",
+      "file": "悬疑紧张配乐\\神秘戏剧性的交响乐.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 1.3
+    },
+    {
+      "id": "orchestral-36",
+      "file": "悬疑紧张配乐\\神秘戏剧性阴暗交响乐.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 1.7
+    },
+    {
+      "id": "orchestral-37",
+      "file": "悬疑紧张配乐\\悬念递进剧情张力交响乐.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 1.9
+    },
+    {
+      "id": "orchestral-38",
+      "file": "悬疑紧张配乐\\悬念神秘戏剧性阴暗的交响乐.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 1.9
+    },
+    {
+      "id": "orchestral-39",
+      "file": "悬疑紧张配乐\\悬疑阴暗忧郁的钢琴.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 0.7
+    },
+    {
+      "id": "orchestral-40",
+      "file": "悬疑紧张配乐\\阴暗忧郁阴森的钢琴.mp3",
+      "kind": "orchestral",
+      "group": "悬疑紧张配乐",
+      "seconds": 1.0
+    }
+  ]
+}

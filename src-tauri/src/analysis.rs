@@ -1092,11 +1092,18 @@ mod tests {
             md.push_str(&format!("| {k} | {total} | {passed} |\n"));
         }
 
-        let out = Path::new(env!("CARGO_MANIFEST_DIR")).join(if engine.eq_ignore_ascii_case("model") {
-            "../eval/results/report-real-model.md"
-        } else {
-            "../eval/results/report-real.md"
-        });
+        let out = Path::new(env!("CARGO_MANIFEST_DIR")).join(format!(
+            "../eval/results/report-{slug}{suffix}.md",
+            slug = {
+                let stem = Path::new(&manifest_path)
+                    .file_stem()
+                    .map(|s| s.to_string_lossy().into_owned())
+                    .unwrap_or_else(|| "real".to_string());
+                // real-manifest → real；real-manifest-40 → real-40
+                stem.replacen("real-manifest", "real", 1)
+            },
+            suffix = if engine.eq_ignore_ascii_case("model") { "-model" } else { "" }
+        ));
         if let Some(parent) = out.parent() {
             let _ = std::fs::create_dir_all(parent);
         }
