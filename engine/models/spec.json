@@ -1,0 +1,7 @@
+{
+  "model": "nmp.onnx",
+  "window": 43844,
+  "backend": "basic_pitch",
+  "sampleRate": 22050,
+  "name": "Basic Pitch（Apache-2.0，ICASSP 2022）"
+}

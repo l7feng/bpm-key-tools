@@ -49,6 +49,7 @@ cargo test --offline eval_real_manifest -- --ignored --nocapture
 
 - 默认读 `../eval/real-manifest.json`；可用 `BPM_EVAL_MANIFEST` 指到别的清单。
 - 样本根目录取清单里的 `base`，可用 `BPM_REAL_BASE` 覆盖（换机器、换曲库时只改环境变量）。
+- 引擎切换：`BPM_EVAL_ENGINE=model` 时走模型引擎（需 `%APPDATA%\BPM Key Tools\model-engine.json` 与权重），报告写 `results/report-real-model.md`；不设则走本地 DSP，写 `report-real.md`。两份报告用同一清单和同一套指标，可以直接并排看。
 - 指标：BPM 严格（≤1 BPM）/ 容差（≤max(2 BPM, 2%)）/ 误弃 / 倍频错误 / 负例通过（按类型分组）/ 调性 top-1 / 单条耗时中位与最大。
 - 报告固定写到 `results/report-real.md`，逐条附 BPM 与调性置信。40 条标注集到手后，只需往清单里补 `bpm` 与 `key` 字段，指标随即变成真实标注口径。
 

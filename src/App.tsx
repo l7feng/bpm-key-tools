@@ -766,7 +766,7 @@ export default function App() {
       </footer>
 
       <footer className="statusbar">
-        <span className="status-version">BPM 调性识别 | v0.4.0</span>
+        <span className="status-version">BPM 调性识别 | v0.4.1</span>
       </footer>
 
       {dropActive && (

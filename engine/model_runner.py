@@ -32,6 +32,94 @@ KEY_NAMES = [
     "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B",
 ]
 
+# Krumhansl-Kessler 大/小调音级权重（索引＝相对主音的音级）
+MAJOR_WEIGHTS = [6.35, 2.23, 3.48, 2.05, 4.19, 2.20, 3.17, 2.79, 2.22, 4.62, 2.36, 2.09]
+MINOR_WEIGHTS = [6.40, 2.71, 2.98, 5.28, 2.23, 3.66, 2.32, 2.50, 3.36, 2.40, 3.53, 2.07]
+
+
+def cosine(a: np.ndarray, b: np.ndarray) -> float:
+    na = float(np.linalg.norm(a))
+    nb = float(np.linalg.norm(b))
+    if na < 1e-9 or nb < 1e-9:
+        return 0.0
+    return float(np.dot(a, b) / (na * nb))
+
+
+def key_from_chroma(chroma: np.ndarray) -> tuple[str | None, str | None, float]:
+    """12 音级 chroma → 调性 top1/top2 与置信度（与 DSP 内核同一套口径）。"""
+    chroma = chroma / (chroma.sum() + 1e-9)
+    majors = np.asarray(MAJOR_WEIGHTS, dtype=np.float64)
+    minors = np.asarray(MINOR_WEIGHTS, dtype=np.float64)
+    scores = []
+    for root in range(12):
+        rotated = np.roll(chroma, -root)
+        scores.append((cosine(rotated, majors), f"{KEY_NAMES[root]} major"))
+        scores.append((cosine(rotated, minors), f"{KEY_NAMES[root]} minor"))
+    scores.sort(key=lambda x: x[0], reverse=True)
+    best_score, best = scores[0]
+    second_score, second = scores[1]
+    concentration = float(np.max(chroma))
+    if concentration < 0.07:
+        return None, None, 0.0
+    if best_score <= 0:
+        return None, None, 0.0
+    conf = (best_score - second_score) / best_score * math.sqrt(concentration)
+    return best, second, max(0.0, min(1.0, conf))
+
+
+def tempo_from_envelope(env: np.ndarray, frame_rate: float) -> tuple[float | None, float]:
+    """NN 起音包络 → 自相关 + 谐波叠加 + 抛物线插值，返回 (BPM, 峰值)。"""
+    if env.size < 16:
+        return None, 0.0
+    env = env - env.mean()
+    if env.std() < 1e-6:
+        return None, 0.0
+    env = env / env.std()
+    n = env.size
+    ac = np.correlate(env, env, mode="full")[n - 1 :]
+    ac = ac / (np.arange(n, 0, -1))  # 按重叠长度归一，避免长 lag 天然偏大
+    lag_min = int(frame_rate * 60.0 / 210.0)
+    lag_max = min(int(frame_rate * 60.0 / 40.0), n - 2)
+    if lag_max <= lag_min + 2:
+        return None, 0.0
+    best_lag, best_score = 0, -1e9
+    for lag in range(lag_min, lag_max + 1):
+        score = ac[lag]
+        if lag * 2 < n:
+            score += 0.5 * ac[lag * 2]
+        if lag * 3 < n:
+            score += 0.33 * ac[lag * 3]
+        # 70–185 BPM 区间轻度加权，刻意不做 120 尖峰
+        bpm = 60.0 * frame_rate / lag
+        if 70.0 <= bpm <= 185.0:
+            score *= 1.0
+        else:
+            score *= 0.85
+        if score > best_score:
+            best_score, best_lag = score, lag
+    if best_lag <= 0:
+        return None, 0.0
+    peak = best_score / max(1e-9, abs(ac[0]))
+    if peak < 0.30:
+        return None, peak
+    # 抛物线插值
+    if 0 < best_lag < n - 1:
+        y0, y1, y2 = ac[best_lag - 1], ac[best_lag], ac[best_lag + 1]
+        denom = y0 - 2 * y1 + y2
+        delta = 0.5 * (y0 - y2) / denom if abs(denom) > 1e-12 else 0.0
+        lag = best_lag + max(-0.5, min(0.5, delta))
+    else:
+        lag = float(best_lag)
+    bpm = 60.0 * frame_rate / lag
+    if bpm < 40.0 or bpm > 210.0:
+        return None, peak
+    # 低频倍频折叠：<70 BPM 时乘 2 落回 70–185，和 DSP 内核同一口径
+    # （Bit Bit Loop 实测 50.0，真实律动是 100 附近）。
+    while bpm < 70.0 and bpm * 2.0 <= 185.0:
+        bpm *= 2.0
+    return float(bpm), float(min(1.0, max(0.0, peak)))
+
+
 
 def read_wav(path: str) -> tuple[np.ndarray, int]:
     with wave.open(path, "rb") as w:
@@ -117,6 +205,125 @@ def load_session(path: str):
     return ort.InferenceSession(path, sess_options=so, providers=["CPUExecutionProvider"])
 
 
+def run_basic_pitch(session, audio: np.ndarray, window: int) -> tuple[np.ndarray, np.ndarray, float]:
+    """Basic Pitch（Apache-2.0）：波形进、音符/起音激活出。
+    返回 (onset_env, chroma, frame_rate)。分块非重叠推理，块边界对 tempo 影响可忽略。
+    """
+    inp = session.get_inputs()[0]
+    outs = session.get_outputs()
+    pitch_outputs = [o for o in outs if o.shape and len(o.shape) == 3 and o.shape[-1] == 88]
+    if len(pitch_outputs) < 2:
+        raise RuntimeError("Basic Pitch 模型应有两个 88 列输出（音符 / 起音）")
+
+    onset_env: list[float] = []
+    chroma = np.zeros(12, dtype=np.float64)
+    frames_per_chunk = 172
+    starts = list(range(0, max(1, len(audio) - window + 1), window))
+    for start in starts:
+        chunk = audio[start : start + window]
+        if chunk.size < window:
+            chunk = np.pad(chunk, (0, window - chunk.size))
+        fed = chunk.reshape(1, window, 1).astype(np.float32)
+        raw = session.run([o.name for o in pitch_outputs], {inp.name: fed})
+        arrays = [np.asarray(r).reshape(-1, arrays_last(r)) for r in raw]
+
+        # 两个输出都是 [frames, 88]：时间导数大的那个是起音（onset），平滑的是音符（note）。
+        deriv = [float(np.abs(np.diff(a, axis=0)).mean()) for a in arrays]
+        note_idx = int(np.argmin(deriv))
+        onset_idx = int(np.argmax(deriv))
+        onset_env.extend(np.asarray(arrays[onset_idx]).sum(axis=1).tolist())
+        note = np.asarray(arrays[note_idx])
+        # chroma：88 个音高折到 12 音级。Basic Pitch 的音高轴是 A0–C8（88 键），
+        # 因此第 0 个音高是 MIDI 21（A0），不是 C1=24；差 3 个半音会让整条调性偏移。
+        weights = np.clip(note, 0, None).sum(axis=0)  # 每个音高在全曲的激活总量
+        for pitch in range(88):
+            chroma[(pitch + 21) % 12] += float(weights[pitch])
+
+    frame_rate = frames_per_chunk * 22050.0 / window
+    return np.asarray(onset_env, dtype=np.float64), chroma, frame_rate
+
+
+def arrays_last(r: np.ndarray) -> int:
+    return int(r.shape[-1])
+
+
+def run_spec_backend(spec: dict, models_dir: str, audio: np.ndarray) -> dict:
+    """按 spec.backend 分派；返回 bpm/key 及置信度（未定一律 None）。"""
+    backend = str(spec.get("backend", "mel")).lower()
+    result = {"bpm": None, "bpmConfidence": 0.0, "key": None, "keyConfidence": 0.0, "keyTop2": None}
+    notes: list[str] = []
+
+    if backend == "basic_pitch":
+        model_path = os.path.join(models_dir, spec.get("model", "nmp.onnx"))
+        session = load_session(model_path)
+        onset_env, chroma, frame_rate = run_basic_pitch(session, audio, int(spec.get("window", 43844)))
+        # 稳定性守卫：起音包络的变异系数太小说明根本没有拍点（稳态和弦实测 0.052，
+        # 真实律动 0.115–0.192）。这一道补的是模型在持续音上凑出慢周期的假阳性。
+        variability = float(onset_env.std() / (onset_env.mean() + 1e-9)) if onset_env.size else 0.0
+        min_var = float(spec.get("minVariability", 0.08))
+        if variability < min_var:
+            result["bpm"] = None
+            result["bpmConfidence"] = 0.0
+            notes.append(f"起音包络变异系数 {variability:.3f} < {min_var}，判稳态/无拍点")
+            peak = 0.0
+        else:
+            bpm, peak = tempo_from_envelope(onset_env, frame_rate)
+            result["bpm"] = bpm
+            result["bpmConfidence"] = round(peak, 3)
+            if bpm is None:
+                notes.append(f"起音包络自相关峰值 {peak:.2f} 未过 0.30，判 undetermined")
+        key, top2, kconf = key_from_chroma(chroma)
+        result["key"] = key
+        result["keyTop2"] = top2
+        result["keyConfidence"] = round(kconf, 3)
+        notes.append(f"Basic Pitch 起音 {len(onset_env)} 帧 @ {frame_rate:.1f} fps；音符激活折 chroma（音高轴 A0–C8）")
+        return {**result, "notes": notes}
+
+    # 通用 mel 分类器（tempo / key 类别标签）
+    mel = log_mel(audio, int(spec.get("sampleRate", 22050)), spec.get("mel", {}))
+    tempo = spec.get("tempo")
+    if tempo:
+        session = load_session(os.path.join(models_dir, tempo["onnx"]))
+        probs = run_model(session, tempo.get("chunkFrames", 187), mel)
+        labels = np.asarray([float(v) for v in label_array(tempo, "tempo")])
+        if probs.size != labels.size:
+            notes.append(f"tempo 输出 {probs.size} 类与 labels {labels.size} 不符，跳过")
+        else:
+            top = int(probs.argmax())
+            conf = float(probs[top])
+            if conf >= float(tempo.get("minConfidence", 0.25)):
+                result["bpm"] = round(float(labels[top]), 1)
+                result["bpmConfidence"] = round(conf, 3)
+            else:
+                notes.append(f"tempo 峰值概率 {conf:.2f} 低于阈值，判 undetermined")
+    else:
+        notes.append("spec 未配置 tempo 模型")
+
+    key_cfg = spec.get("key")
+    if key_cfg:
+        session = load_session(os.path.join(models_dir, key_cfg["onnx"]))
+        probs = run_model(session, key_cfg.get("chunkFrames", 187), mel)
+        labels = label_array(key_cfg, "key")
+        if len(labels) >= 24 and probs.size == len(labels):
+            top = int(probs.argmax())
+            second = int(np.argsort(probs)[-2])
+            result["key"] = labels[top]
+            result["keyTop2"] = labels[second]
+            result["keyConfidence"] = round(float(probs[top]), 3)
+        elif probs.size == 12:
+            chroma = probs / (probs.sum() + 1e-9)
+            key, top2, kconf = key_from_chroma(chroma)
+            result["key"] = key
+            result["keyTop2"] = top2
+            result["keyConfidence"] = round(kconf, 3)
+            notes.append("模型只输出 12 音级，调性由权重表推出")
+        else:
+            notes.append(f"key 输出 {probs.size} 类与 labels {len(labels)} 不符，跳过")
+    else:
+        notes.append("spec 未配置 key 模型")
+    return {**result, "notes": notes}
+
+
 def run_model(session, spec_chunk_frames: int, mel_spec: np.ndarray) -> np.ndarray:
     """把 mel 切成定长块逐块推理，softmax 后取平均。"""
     chunk = int(spec_chunk_frames) if spec_chunk_frames else 187
@@ -183,6 +390,16 @@ def main() -> int:
             else:
                 with open(spec_path, "r", encoding="utf-8") as f:
                     spec = json.load(f)
+                backend = str(spec.get("backend", "mel")).lower()
+                if backend == "basic_pitch":
+                    onnx_path = (
+                        spec.get("model", "nmp.onnx")
+                        if os.path.isabs(spec.get("model", ""))
+                        else os.path.join(models_dir, spec.get("model", "nmp.onnx"))
+                    )
+                    if not os.path.exists(onnx_path):
+                        ok = False
+                        detail.append(f"缺权重：{onnx_path}")
                 for role in ("tempo", "key"):
                     e = spec.get(role)
                     if not e:
@@ -209,7 +426,6 @@ def main() -> int:
     audio, sr = read_wav(args.audio)
     sr_target = int(spec.get("sampleRate", 22050))
     audio = resample(audio, sr, sr_target)
-    mel = log_mel(audio, sr_target, spec.get("mel", {}))
 
     result = {
         "bpm": None,
@@ -222,47 +438,9 @@ def main() -> int:
         "durationSec": round(len(audio) / sr_target, 2),
         "sampleRate": sr_target,
     }
-
-    tempo = spec.get("tempo")
-    if tempo:
-        session = load_session(os.path.join(models_dir, tempo["onnx"]))
-        probs = run_model(session, tempo.get("chunkFrames", 187), mel)
-        labels = np.asarray([float(v) for v in label_array(tempo, "tempo")])
-        if probs.size != labels.size:
-            result["notes"].append(f"tempo 输出 {probs.size} 类与 labels {labels.size} 不符，跳过")
-        else:
-            top = int(probs.argmax())
-            bpm = float(labels[top])
-            conf = float(probs[top])
-            # 用邻近类的概率质量做一个粗略的稳定性判据：峰太散就判 undetermined。
-            if conf >= float(tempo.get("minConfidence", 0.25)):
-                result["bpm"] = round(bpm, 1)
-                result["bpmConfidence"] = round(conf, 3)
-            else:
-                result["notes"].append(f"tempo 峰值概率 {conf:.2f} 低于阈值，判 undetermined")
-    else:
-        result["notes"].append("spec 未配置 tempo 模型")
-
-    key_cfg = spec.get("key")
-    if key_cfg:
-        session = load_session(os.path.join(models_dir, key_cfg["onnx"]))
-        probs = run_model(session, key_cfg.get("chunkFrames", 187), mel)
-        labels = label_array(key_cfg, "key")
-        if len(labels) >= 24 and probs.size == len(labels):
-            top = int(probs.argmax())
-            second = int(np.argsort(probs)[-2])
-            result["key"] = labels[top]
-            result["keyTop2"] = labels[second]
-            result["keyConfidence"] = round(float(probs[top]), 3)
-        elif probs.size == 12:
-            chroma = probs / (probs.sum() + 1e-9)
-            result["key"] = KEY_NAMES[int(chroma.argmax())]
-            result["keyConfidence"] = round(float(chroma.max()), 3)
-            result["notes"].append("模型只输出 12 音级（未分大小调）")
-        else:
-            result["notes"].append(f"key 输出 {probs.size} 类与 labels {len(labels)} 不符，跳过")
-    else:
-        result["notes"].append("spec 未配置 key 模型")
+    out = run_spec_backend(spec, models_dir, audio)
+    result.update({k: v for k, v in out.items() if k != "notes"})
+    result["notes"] = out.get("notes", [])
 
     print(json.dumps(result, ensure_ascii=False))
     return 0

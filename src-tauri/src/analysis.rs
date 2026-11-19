@@ -884,6 +884,9 @@ mod tests {
             }
         };
         let doc: serde_json::Value = serde_json::from_str(&raw).unwrap();
+        // 引擎可切换：BPM_EVAL_ENGINE=model 时走模型引擎（需 model-engine.json），
+        // 这样 DSP 与模型能在同一份清单、同一套指标上并排比较。
+        let engine = std::env::var("BPM_EVAL_ENGINE").unwrap_or_else(|_| "dsp".to_string());
         let base = std::env::var("BPM_REAL_BASE")
             .ok()
             .or_else(|| doc.get("base").and_then(|v| v.as_str()).map(|s| s.to_string()))
@@ -918,7 +921,12 @@ mod tests {
             // 有 bpm 字段（哪怕是 null）就算「已标注」；负例即 bpm 为 null 的那批。
             let labeled = it.get("bpm").is_some();
             let key_truth = it.get("key").and_then(|v| v.as_str()).map(|s| s.to_string());
-            match analyze_file(&path, "dsp") {
+            let out = if engine.eq_ignore_ascii_case("model") {
+                crate::model_engine::analyze(&path)
+            } else {
+                analyze_file(&path, "dsp")
+            };
+            match out {
                 Ok(r) => rows.push(Row {
                     id,
                     kind,
@@ -1024,7 +1032,10 @@ mod tests {
         }
 
         let mut md = String::new();
-        md.push_str("# 真实素材评测报告（Rust DSP 内核）\n\n");
+        md.push_str(&format!(
+            "# 真实素材评测报告（引擎：{}）\n\n",
+            if engine.eq_ignore_ascii_case("model") { "神经网络模型" } else { "本地 DSP" }
+        ));
         md.push_str("由 `cargo test --offline eval_real_manifest -- --ignored --nocapture` 生成，指标不手工填写。\n");
         md.push_str("清单 `eval/real-manifest.json`：`bpm` 为数值＝有真值；`bpm: null`＝应判 undetermined 的负例；不带 `bpm`＝尚无标注，只列观测值。\n\n");
         md.push_str(&format!(
@@ -1081,7 +1092,11 @@ mod tests {
             md.push_str(&format!("| {k} | {total} | {passed} |\n"));
         }
 
-        let out = Path::new(env!("CARGO_MANIFEST_DIR")).join("../eval/results/report-real.md");
+        let out = Path::new(env!("CARGO_MANIFEST_DIR")).join(if engine.eq_ignore_ascii_case("model") {
+            "../eval/results/report-real-model.md"
+        } else {
+            "../eval/results/report-real.md"
+        });
         if let Some(parent) = out.parent() {
             let _ = std::fs::create_dir_all(parent);
         }

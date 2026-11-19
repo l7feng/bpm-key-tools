@@ -89,8 +89,11 @@ models/
 
 输出 `{"ready": true/false, "detail": "…"}`：检查 `modelsDir`、`spec.json`、权重文件、onnxruntime 是否齐全。
 
-## 现状（2026-11-17）
+## 现状（2026-11-19）
 
-- 链路已打通并有用例覆盖（`model_engine::tests::fake_runner_roundtrip`：假 runner → 解码 → 传参 → 解析）。
-- 本机**尚未放入真实权重**：网络代理当时不通，下载未完成；`model_runner.py` 的前端与标签映射尚未在真实权重上标定。
-- 因此「模型 vs DSP」的对比指标仍为空，不能用它下结论。
+- 链路已打通并有用例覆盖（`model_engine::tests::fake_runner_roundtrip`）。
+- 已入仓**真实权重**：`models/nmp.onnx`（Basic Pitch，Apache-2.0，230,444 B / `2c3c1d14…`）+ `models/spec.json`（`backend: "basic_pitch"`）+ `models/NOTICE.md`（署名与许可）。
+- 后端逻辑：NN 起音激活 → 起音包络 → 自相关 + 谐波叠加 + 倍频折叠 → BPM；NN 音符激活 → 折 chroma（音高轴 A0–C8，基数 21）→ Krumhansl 模板 → 调性。另有两道守卫：起音包络变异系数 `<0.08` 判稳态（4 s 大三和弦实测 0.052 → undetermined）。
+- 真实素材实测（同一份 27 条清单，`BPM_EVAL_ENGINE=model`）：BPM 严格 1/1、负例通过 7/18（DSP 18/18）、耗时中位 1,286 ms（DSP 891 ms）。12 条铺底素材模型给了 108–192 BPM 而 DSP 判 undetermined —— **铺底没有真值，不能算模型错**，需要 40 条标注集裁决。
+- 已知缺陷：4 s 大三和弦的调性给 E minor（C major 的关系小调），三和弦本来就同时支持两种解释；点击轨没有音高信息，调性无意义。
+
