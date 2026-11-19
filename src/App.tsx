@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { convertFileSrc, invoke, isTauri } from "@tauri-apps/api/core";
+import { invoke, isTauri } from "@tauri-apps/api/core";
 import Waveform from "./Waveform";
 import { MOCK_TRACKS, type ReviewState, type Track } from "./mock";
 import "./styles.css";
@@ -119,6 +119,25 @@ export default function App() {
   const waveCache = useRef(new Map<string, number[]>());
   const pendingSeek = useRef<number | null>(null);
   const loadedPath = useRef<string | null>(null);
+  const objectUrl = useRef<string | null>(null);
+
+  /** 试听音源：把文件读成 Blob URL。asset 协议在 WebView2 下拿不到数据，这里直接走 IPC。 */
+  const attachAudio = async (audio: HTMLAudioElement, path: string) => {
+    const bytes = await invoke<ArrayBuffer>("read_audio", { path });
+    const ext = path.split(".").pop()?.toLowerCase() ?? "";
+    const mime =
+      ext === "mp3" ? "audio/mpeg"
+        : ext === "m4a" ? "audio/mp4"
+          : ext === "flac" ? "audio/flac"
+            : ext === "ogg" ? "audio/ogg"
+              : ext === "aiff" || ext === "aif" ? "audio/aiff"
+                : "audio/wav";
+    if (objectUrl.current) URL.revokeObjectURL(objectUrl.current);
+    const url = URL.createObjectURL(new Blob([new Uint8Array(bytes)], { type: mime }));
+    objectUrl.current = url;
+    audio.src = url;
+    audio.load();
+  };
 
   const selected: Track | undefined = tracks.find((t) => t.id === selectedId);
   const selectedPath = selected?.path ?? null;
@@ -353,23 +372,28 @@ export default function App() {
     }
     const audio = audioRef.current;
     if (!audio) return;
+    const path: string = track.path!;
     if (playingId === track.id) {
       audio.pause();
       setPlayingId(null);
       return;
     }
-    if (loadedPath.current !== track.path) {
-      loadedPath.current = track.path;
-      pendingSeek.current = null;
-      audio.src = convertFileSrc(track.path);
-      audio.currentTime = 0;
-      setPosition(0);
-      setClipDuration(0);
-    }
-    void audio
-      .play()
-      .then(() => setPlayingId(track.id))
-      .catch((err) => addLog(`[${stamp()}] 试听失败：${String(err)}`));
+    void (async () => {
+      try {
+        if (loadedPath.current !== path) {
+          await attachAudio(audio, path);
+          loadedPath.current = path;
+          pendingSeek.current = null;
+          audio.currentTime = 0;
+          setPosition(0);
+          setClipDuration(0);
+        }
+        await audio.play();
+        setPlayingId(track.id);
+      } catch (err) {
+        addLog(`[${stamp()}] 试听失败：${String(err)}`);
+      }
+    })();
   };
 
   /** 波形点选 / 拖动：ratio 0..1，play 表示是否同时开始播放。 */
@@ -377,34 +401,36 @@ export default function App() {
     if (demo || !selected?.path) return;
     const audio = audioRef.current;
     if (!audio) return;
-    const path = selected.path;
+    const sel = selected;
+    const path: string = sel.path!;
     const target = Math.min(1, Math.max(0, ratio));
-    if (loadedPath.current !== path) {
-      loadedPath.current = path;
-      pendingSeek.current = target;
-      audio.src = convertFileSrc(path);
-      audio.load();
-      setClipDuration(selected.durationSec);
-      if (play) {
-        void audio
-          .play()
-          .then(() => setPlayingId(selected.id))
-          .catch((err) => addLog(`[${stamp()}] 试听失败：${String(err)}`));
+    void (async () => {
+      try {
+        if (loadedPath.current !== path) {
+          loadedPath.current = path;
+          pendingSeek.current = target;
+          await attachAudio(audio, path);
+          setClipDuration(sel.durationSec);
+          if (play) {
+            await audio.play();
+            setPlayingId(sel.id);
+          }
+          return;
+        }
+        const total = audio.duration;
+        if (Number.isFinite(total) && total > 0) {
+          const nextTime = target * total;
+          audio.currentTime = nextTime;
+          setPosition(nextTime);
+        }
+        if (play && playingId !== selected.id) {
+          await audio.play();
+          setPlayingId(selected.id);
+        }
+      } catch (err) {
+        addLog(`[${stamp()}] 试听失败：${String(err)}`);
       }
-      return;
-    }
-    const total = audio.duration;
-    if (Number.isFinite(total) && total > 0) {
-      const nextTime = target * total;
-      audio.currentTime = nextTime;
-      setPosition(nextTime);
-    }
-    if (play && playingId !== selected.id) {
-      void audio
-        .play()
-        .then(() => setPlayingId(selected.id))
-        .catch((err) => addLog(`[${stamp()}] 试听失败：${String(err)}`));
-    }
+    })();
   };
 
   const decide = async (next: ReviewState) => {

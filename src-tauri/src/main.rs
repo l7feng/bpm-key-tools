@@ -459,6 +459,22 @@ async fn analyze_file(path: String, engine: String) -> Result<analysis::Analysis
     .map_err(|e| e.to_string())?
 }
 
+/// 试听用：把音频文件读成二进制交给前端做 Blob，绕开 asset 协议的作用域限制。
+#[tauri::command]
+async fn read_audio(path: String) -> Result<tauri::ipc::Response, String> {
+    let bytes = tauri::async_runtime::spawn_blocking(move || -> Result<Vec<u8>, String> {
+        let p = std::path::PathBuf::from(&path);
+        let meta = std::fs::metadata(&p).map_err(|e| format!("读取失败：{e}"))?;
+        if meta.len() > 64 * 1024 * 1024 {
+            return Err("文件超过 64 MB，暂不提供试听".to_string());
+        }
+        std::fs::read(&p).map_err(|e| format!("读取失败：{e}"))
+    })
+    .await
+    .map_err(|e| e.to_string())??;
+    Ok(tauri::ipc::Response::new(bytes))
+}
+
 /// 拖放解析：拖入文件夹就用它；拖入音频文件就用它所在的文件夹。
 #[tauri::command]
 fn resolve_drop_folder(paths: Vec<String>) -> Option<String> {
@@ -487,6 +503,7 @@ fn main() {
             write_metadata,
             waveform_peaks,
             analyze_file,
+            read_audio,
             resolve_drop_folder
         ])
         .run(tauri::generate_context!())
